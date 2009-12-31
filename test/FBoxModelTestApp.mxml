@@ -6,7 +6,7 @@
                 backgroundColor="#ffffff" horizontalScrollPolicy="off" verticalScrollPolicy="off">
     <mx:Script>
 		<![CDATA[
-        import com.flashartofwar.boxmodel.BoxModelTestSuite;
+        import com.flashartofwar.fboxmodell.BoxModelTestSuite;
 
 
         private var core:FlexUnitCore;

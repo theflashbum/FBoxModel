@@ -1,23 +1,25 @@
-package com.flashartofwar.boxmodel.display {
-	import flexunit.framework.Assert;
+package com.flashartofwar.fboxmodel.display {
+import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
 
-	public class BoxModelDisplayTest
-	{
+import flexunit.framework.Assert;
 
-		
-		private var boxModel : BoxModelDisplay;
-		
-		public function BoxModelDisplayTest()
-		{
-			
-		}
-				
-		[Test]
-		public function testTidy():void
-		{
-			boxModel = new BoxModelDisplay();
-			Assert.assertNotNull(boxModel);
-		}
-	}
+public class BoxModelDisplayTest
+{
+
+
+    private var boxModel:BoxModel;
+
+    public function BoxModelDisplayTest()
+    {
+
+    }
+
+    [Test]
+    public function testTidy():void
+    {
+        boxModel = new BoxModel();
+        Assert.assertNotNull(boxModel);
+    }
+}
 }
 
