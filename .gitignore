@@ -16,7 +16,7 @@
 /.as3_classpath
 /com.adobe.flexbuilder.project.prefs
 /org.eclipse.core.resources.prefs
-/FBoxModel.iml
+/*.iml
  
 Icon
 Thumbs.db
