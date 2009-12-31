@@ -183,5 +183,9 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
     {
         return super.graphics;
     }
+
+    public function drawNow():void {
+
+    }
 }
 }

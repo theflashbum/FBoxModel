@@ -55,5 +55,28 @@ public interface IBoxModelDisplay
     function swapChildren(child1:DisplayObject, child2:DisplayObject):void;
 
     function swapChildrenAt(index1:int, index2:int):void;
+
+    function get x():Number;
+
+    function set x(value:Number):void;
+
+    function get y():Number;
+
+    function set y(value:Number):void;
+
+    function get alpha():Number;
+
+    function set alpha(value:Number):void;
+
+    function get scaleX():Number;
+
+    function set scaleX(value:Number):void;
+
+    function get width():Number;
+
+    function get height():Number;
+
+    function drawNow():void;
+
 }
 }

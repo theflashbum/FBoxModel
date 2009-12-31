@@ -94,7 +94,7 @@ public class BoxModelDisplay extends AbstractBoxModelDisplay
     /**
      * Forces a redraw of the display
      */
-    public function drawNow():void
+    override public function drawNow():void
     {
         draw();
     }
