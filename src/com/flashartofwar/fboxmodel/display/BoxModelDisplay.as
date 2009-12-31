@@ -9,8 +9,6 @@ public class BoxModelDisplay extends AbstractBoxModelDisplay
     public static const DRAW:String = "draw";
 
     protected var _invalid:Boolean;
-    protected var _width:Number = 0;
-    protected var _height:Number = 0;
 
 
     public function BoxModelDisplay()
@@ -25,41 +23,6 @@ public class BoxModelDisplay extends AbstractBoxModelDisplay
     //
     //--------------------------------------------------------------------------------
 
-    /**
-     * @inheritDoc
-     */
-    public override function get width():Number
-    {
-        return _width;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public override function set width(value:Number):void
-    {
-        if (_width == value) return;
-        _width = ! isNaN(value) ? value : 0;
-        invalidate();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public override function get height():Number
-    {
-        return _height;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public override function set height(value:Number):void
-    {
-        if (_height == value) return;
-        _height = ! isNaN(value) ? value : 0;
-        invalidate();
-    }
 
     //--------------------------------------------------------------------------------
     //
@@ -67,23 +30,6 @@ public class BoxModelDisplay extends AbstractBoxModelDisplay
     //
     //--------------------------------------------------------------------------------
 
-    /**
-     * The width of the display container
-     * @return Number
-     */
-    protected function get displayWidth():Number
-    {
-        return display.width > _width ? display.width : _width;
-    }
-
-    /**
-     * The height of the display container
-     * @return Number
-     */
-    protected function get displayHeight():Number
-    {
-        return display.height > _height ? display.height : _height;
-    }
 
     //--------------------------------------------------------------------------------
     //

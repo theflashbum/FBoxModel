@@ -1,6 +1,7 @@
 package com.flashartofwar.fboxmodel.boxmodel {
 
 import flash.display.Bitmap;
+import flash.errors.IllegalOperationError;
 import flash.events.EventDispatcher;
 import flash.geom.Rectangle;
 
@@ -35,6 +36,8 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     protected var _debugPadding:Boolean = false;
     protected var _debugPaddingColor:uint = 0xFFFF00;
     protected var _backgroundImageAlpha:Number = 1;
+    protected var _width:Number = 0;
+    protected var _height:Number = 0;
 
     //--------------------------------------------------------------------------------
     //
@@ -45,9 +48,10 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     /**
      *
      */
-    public function AbstractBoxModel()
+    public function AbstractBoxModel(self:AbstractBoxModel)
     {
-        super();
+        if (self != this)
+            throw new IllegalOperationError("AbstractBoxModel cannot be instantiated directly.");
     }
 
     //--------------------------------------------------------------------------------
@@ -709,60 +713,5 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
         return offset;
     }
 
-    public function get paddingRectX():Number {
-        return _paddingRectangle.x;
-    }
-
-    public function get paddingRectY():Number {
-        return _paddingRectangle.y;
-    }
-
-    public function get paddingRectWidth():Number {
-        return _paddingRectangle.width;
-    }
-
-    public function get paddingRectHeight():Number {
-        return _paddingRectangle.height;
-    }
-
-    public function get borderRectX():Number {
-        return _borderRectangle.x;
-    }
-
-    public function get borderRectY():Number {
-        return _borderRectangle.y;
-    }
-
-    public function get borderRectWidth():Number {
-        return _borderRectangle.width;
-    }
-
-    public function get borderRectHeight():Number {
-        return _borderRectangle.height;
-    }
-
-    public function set borderRectWidth(value:Number):void {
-        _borderRectangle.width = value;
-    }
-
-    public function set borderRectHeight(value:Number):void {
-        _borderRectangle.height = value;
-    }
-
-    public function set paddingRectWidth(value:Number):void {
-        _paddingRectangle.width = value;
-    }
-
-    public function set paddingRectHeight(value:Number):void {
-        _paddingRectangle.height = value;
-    }
-
-    public function set paddingRectX(value:Number):void {
-        _paddingRectangle.x = value;
-    }
-
-    public function set paddingRectY(value:Number):void {
-        _paddingRectangle.y = value;
-    }
 }
 }

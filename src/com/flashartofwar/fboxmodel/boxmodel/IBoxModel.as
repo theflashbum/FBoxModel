@@ -165,32 +165,5 @@ public interface IBoxModel
     function set marginRight(marginRight:Number):void;
 
 
-    function get paddingRectY():Number;
-
-    function get paddingRectX():Number;
-
-    function get paddingRectHeight():Number;
-
-    function get paddingRectWidth():Number;
-
-    function get borderRectHeight():Number;
-
-    function get borderRectWidth():Number;
-
-    function get borderRectY():Number;
-
-    function get borderRectX():Number;
-
-    function set borderRectWidth(value:Number):void;
-
-    function set borderRectHeight(value:Number):void;
-
-    function set paddingRectWidth(value:Number):void;
-
-    function set paddingRectHeight(value:Number):void;
-
-    function set paddingRectX(value:Number):void;
-
-    function set paddingRectY(value:Number):void;
 }
 }

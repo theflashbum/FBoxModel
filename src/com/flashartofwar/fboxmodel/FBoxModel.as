@@ -1,6 +1,7 @@
 package com.flashartofwar.fboxmodel {
 import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModel;
+import com.flashartofwar.fboxmodel.boxmodel.IBoxModelRenderable;
 import com.flashartofwar.fboxmodel.display.BoxModelDisplay;
 import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
 
@@ -16,11 +17,11 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
 
     public static const SAMPLE_BG:String = "sampleBackground";
 
-    protected var boxModel:IBoxModel;
+    protected var boxModel:IBoxModelRenderable;
 
     public function FBoxModel() {
-        boxModel = new BoxModel();
         super();
+        boxModel = new BoxModel(display);
     }
 
     /**
@@ -112,8 +113,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     override public function get width():Number
     {
-        var tempWidth:Number = display.width > _width ? display.width : _width;
-        return borderLeft + paddingLeft + tempWidth + paddingRight + borderRight;
+        return boxModel.width;
     }
 
     /**
@@ -122,8 +122,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     override public function get height():Number
     {
-        var tempHeight:Number = display.height > _height ? display.height : _height;
-        return borderTop + paddingTop + tempHeight + paddingBottom + borderBottom;
+        return boxModel.height;
     }
 
     /**
@@ -576,25 +575,6 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
         display.y = paddingTop + borderTop;
     }
 
-    /**
-     * Calculates the size of the border rectangle
-     */
-    protected function calculateBorder():void
-    {
-        boxModel.borderRectWidth = boxModel.paddingRectWidth + borderLeft + borderRight;
-        boxModel.borderRectHeight = boxModel.paddingRectHeight + borderTop + borderBottom;
-    }
-
-    /**
-     * Take content width and height + padding to calculate padding size
-     */
-    protected function calculatePadding():void
-    {
-        boxModel.paddingRectWidth = paddingLeft + displayWidth + paddingRight;
-        boxModel.paddingRectHeight = paddingTop + displayHeight + paddingBottom;
-        boxModel.paddingRectX = borderLeft;
-        boxModel.paddingRectY = borderTop;
-    }
 
     /**
      * Sets the backgroundPositionX and backgroundPositionY to 0
@@ -602,28 +582,45 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
     protected function resetBackgroundPosition():void
     {
         backgroundPositionX = backgroundPositionY = 0;
+        invalidate();
     }
 
     public function clearProperties():void {
         boxModel.clearProperties();
+        invalidate();
     }
 
     public function clearPadding():void {
         boxModel.clearPadding();
+        invalidate();
     }
 
     public function clearMargin():void {
         boxModel.clearMargin();
+        invalidate();
     }
 
     public function clearBorder():void {
         boxModel.clearBorder();
+        invalidate();
     }
 
     public function clearBackground():void {
         boxModel.clearBackground();
+        invalidate();
     }
 
+    override public function set width(value:Number):void
+    {
+        boxModel.width = value;
+        invalidate();
+    }
+
+    override public function set height(value:Number):void
+    {
+        boxModel.height = value;
+        invalidate();
+    }
 
     /**
      * Creates a snapshot of the display object.
@@ -708,9 +705,9 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
     override protected function draw():void
     {
 
-        calculatePadding();
+        boxModel.calculatePadding();
 
-        calculateBorder();
+        boxModel.calculateBorder();
 
         // Start drawing
         $graphics.clear();
@@ -747,8 +744,8 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
         //
         if (boxModel.backgroundImageBitmap)
         {
-            var bgiFullW:Number = paddingLeft + displayWidth + paddingRight;
-            var bgiFullH:Number = paddingTop + displayHeight + paddingBottom;
+            var bgiFullW:Number = paddingLeft + boxModel.displayWidth + paddingRight;
+            var bgiFullH:Number = paddingTop + boxModel.displayHeight + paddingBottom;
 
             var bgiW:Number = boxModel.backgroundImageBitmap.width;
             var bgiH:Number = boxModel.backgroundImageBitmap.height;
@@ -807,59 +804,9 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
         if (boxModel.debugPadding)
         {
             $graphics.beginFill(boxModel.backgroundColor, backgroundColorAlpha);
-            $graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, displayWidth, displayHeight);
+            $graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, boxModel.displayWidth, boxModel.displayHeight);
             $graphics.endFill();
         }
-    }
-
-    public function get paddingRectY():Number {
-        return 0;
-    }
-
-    public function get paddingRectX():Number {
-        return 0;
-    }
-
-    public function get paddingRectHeight():Number {
-        return 0;
-    }
-
-    public function get paddingRectWidth():Number {
-        return 0;
-    }
-
-    public function get borderRectHeight():Number {
-        return 0;
-    }
-
-    public function get borderRectWidth():Number {
-        return 0;
-    }
-
-    public function get borderRectY():Number {
-        return 0;
-    }
-
-    public function get borderRectX():Number {
-        return 0;
-    }
-
-    public function set borderRectWidth(value:Number):void {
-    }
-
-    public function set borderRectHeight(value:Number):void {
-    }
-
-    public function set paddingRectWidth(value:Number):void {
-    }
-
-    public function set paddingRectHeight(value:Number):void {
-    }
-
-    public function set paddingRectX(value:Number):void {
-    }
-
-    public function set paddingRectY(value:Number):void {
     }
 }
 }
