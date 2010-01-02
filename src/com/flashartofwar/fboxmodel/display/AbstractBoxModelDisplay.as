@@ -7,7 +7,7 @@ import flash.utils.Dictionary;
 
 public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
 {
-    protected var display:Sprite;
+    protected var _display:Sprite;
     protected var registeredListeners:Dictionary = new Dictionary();
 
     /**
@@ -41,7 +41,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function get numChildren():int
     {
-        return display.numChildren;
+        return _display.numChildren;
     }
 
     /**
@@ -67,7 +67,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function addChild(child:DisplayObject):DisplayObject
     {
-        return display.addChild(child);
+        return _display.addChild(child);
     }
 
     /**
@@ -75,7 +75,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function addChildAt(child:DisplayObject, index:int):DisplayObject
     {
-        return display.addChildAt(child, index);
+        return _display.addChildAt(child, index);
     }
 
     /**
@@ -83,7 +83,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function contains(child:DisplayObject):Boolean
     {
-        return display.contains(child);
+        return _display.contains(child);
     }
 
     /**
@@ -91,7 +91,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function getChildAt(index:int):DisplayObject
     {
-        return display.getChildAt(index);
+        return _display.getChildAt(index);
     }
 
     /**
@@ -99,7 +99,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function getChildByName(name:String):DisplayObject
     {
-        return display.getChildByName(name);
+        return _display.getChildByName(name);
     }
 
     /**
@@ -107,7 +107,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function getChildIndex(child:DisplayObject):int
     {
-        return display.getChildIndex(child);
+        return _display.getChildIndex(child);
     }
 
     /**
@@ -115,7 +115,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function removeChild(child:DisplayObject):DisplayObject
     {
-        return display.removeChild(child);
+        return _display.removeChild(child);
     }
 
     /**
@@ -123,7 +123,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function removeChildAt(index:int):DisplayObject
     {
-        return display.removeChildAt(index);
+        return _display.removeChildAt(index);
     }
 
     /**
@@ -131,7 +131,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function setChildIndex(child:DisplayObject, index:int):void
     {
-        display.setChildIndex(child, index);
+        _display.setChildIndex(child, index);
     }
 
     /**
@@ -139,7 +139,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function swapChildren(child1:DisplayObject, child2:DisplayObject):void
     {
-        display.swapChildren(child1, child2);
+        _display.swapChildren(child1, child2);
     }
 
     /**
@@ -147,7 +147,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     override public function swapChildrenAt(index1:int, index2:int):void
     {
-        display.swapChildrenAt(index1, index2);
+        _display.swapChildrenAt(index1, index2);
     }
 
     //--------------------------------------------------------------------------------
@@ -161,10 +161,10 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
      */
     protected function addDisplay():void
     {
-        display = new Sprite();
-        display.name = "display";
+        _display = new Sprite();
+        _display.name = "display";
 
-        $addChild(display);
+        $addChild(_display);
     }
 
     /**

@@ -2,29 +2,33 @@ package com.flashartofwar.fboxmodel {
 import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModelRenderable;
-import com.flashartofwar.fboxmodel.display.BoxModelDisplay;
-import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
+import com.flashartofwar.fboxmodel.display.AbstractBoxModelDisplay;
+import com.flashartofwar.fboxmodel.renderer.BoxModelRenderer;
+import com.flashartofwar.fboxmodel.renderer.IBoxModelRenderer;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.DisplayObject;
+import flash.display.DisplayObjectContainer;
 import flash.events.Event;
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
-public class FBoxModel extends BoxModelDisplay implements IBoxModel {
+public class FBoxModel extends AbstractBoxModelDisplay implements IBoxModel,IBoxModelRenderer {
 
-    public static const SAMPLE_BG:String = "sampleBackground";
+    public static const DRAW:String = "draw";
 
-    protected var boxModel:IBoxModelRenderable;
+    protected var _invalid:Boolean;
+    protected var _boxModel:IBoxModelRenderable;
+    protected var renderer:BoxModelRenderer;
 
     public function FBoxModel() {
-        super();
-        boxModel = new BoxModel(display);
+        super(this);
+        _boxModel = new BoxModel(_display);
+        renderer = new BoxModelRenderer(this);
         //TODO this can removed once BoxModelRenderer is setup
         addStageListeners();
     }
+
 
     /**
      * The fill color of the background
@@ -32,7 +36,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundColor():uint
     {
-        return boxModel.backgroundColor;
+        return _boxModel.backgroundColor;
     }
 
     /**
@@ -40,7 +44,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundColor(value:uint):void
     {
-        boxModel.backgroundColor = value;
+        _boxModel.backgroundColor = value;
         invalidate();
     }
 
@@ -50,7 +54,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderColor():uint
     {
-        return boxModel.borderColor;
+        return _boxModel.borderColor;
     }
 
     /**
@@ -58,7 +62,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderColor(value:uint):void
     {
-        boxModel.borderColor = value;
+        _boxModel.borderColor = value;
         invalidate();
     }
 
@@ -67,7 +71,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundPosition(value:String):void
     {
-        boxModel.backgroundPosition = value;
+        _boxModel.backgroundPosition = value;
 
         invalidate();
     }
@@ -86,7 +90,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set padding(values:Array):void
     {
-        boxModel.padding = values;
+        _boxModel.padding = values;
         invalidate();
     }
 
@@ -104,7 +108,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set margin(values:Array):void
     {
-        boxModel.margin = values;
+        _boxModel.margin = values;
 
         invalidate();
     }
@@ -115,7 +119,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     override public function get width():Number
     {
-        return boxModel.width;
+        return _boxModel.width;
     }
 
     /**
@@ -124,7 +128,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     override public function get height():Number
     {
-        return boxModel.height;
+        return _boxModel.height;
     }
 
     /**
@@ -132,7 +136,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set border(value:String):void
     {
-        boxModel.border = value;
+        _boxModel.border = value;
 
         invalidate();
     }
@@ -160,7 +164,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundScale9Grid():Rectangle
     {
-        return boxModel.backgroundScale9Grid;
+        return _boxModel.backgroundScale9Grid;
     }
 
     /**
@@ -168,7 +172,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
     {
-        boxModel.backgroundScale9Grid = backgroundScale9Grid;
+        _boxModel.backgroundScale9Grid = backgroundScale9Grid;
         invalidate();
     }
 
@@ -178,7 +182,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundRepeat():String
     {
-        return boxModel.backgroundRepeat;
+        return _boxModel.backgroundRepeat;
     }
 
     /**
@@ -186,7 +190,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundRepeat(backgroundRepeat:String):void
     {
-        boxModel.backgroundRepeat = backgroundRepeat;
+        _boxModel.backgroundRepeat = backgroundRepeat;
         invalidate();
     }
 
@@ -196,7 +200,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundColorAlpha():Number
     {
-        return boxModel.backgroundColorAlpha;
+        return _boxModel.backgroundColorAlpha;
     }
 
     /**
@@ -204,7 +208,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
     {
-        boxModel.backgroundColorAlpha = backgroundColorAlpha;
+        _boxModel.backgroundColorAlpha = backgroundColorAlpha;
         invalidate();
     }
 
@@ -214,7 +218,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get paddingTop():Number
     {
-        return boxModel.paddingTop;
+        return _boxModel.paddingTop;
     }
 
     /**
@@ -222,7 +226,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set paddingTop(paddingTop:Number):void
     {
-        boxModel.paddingTop = paddingTop;
+        _boxModel.paddingTop = paddingTop;
         invalidate();
     }
 
@@ -232,7 +236,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get paddingRight():Number
     {
-        return boxModel.paddingRight;
+        return _boxModel.paddingRight;
     }
 
     /**
@@ -240,7 +244,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set paddingRight(paddingRight:Number):void
     {
-        boxModel.paddingRight = paddingRight;
+        _boxModel.paddingRight = paddingRight;
         invalidate();
     }
 
@@ -250,7 +254,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get paddingBottom():Number
     {
-        return boxModel.paddingBottom;
+        return _boxModel.paddingBottom;
     }
 
     /**
@@ -258,7 +262,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set paddingBottom(paddingBottom:Number):void
     {
-        boxModel.paddingBottom = paddingBottom;
+        _boxModel.paddingBottom = paddingBottom;
         invalidate();
     }
 
@@ -268,7 +272,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get paddingLeft():Number
     {
-        return boxModel.paddingLeft;
+        return _boxModel.paddingLeft;
     }
 
     /**
@@ -276,7 +280,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set paddingLeft(paddingLeft:Number):void
     {
-        boxModel.paddingLeft = paddingLeft;
+        _boxModel.paddingLeft = paddingLeft;
         invalidate();
     }
 
@@ -286,7 +290,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get marginTop():Number
     {
-        return boxModel.marginTop;
+        return _boxModel.marginTop;
     }
 
     /**
@@ -294,7 +298,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set marginTop(marginTop:Number):void
     {
-        boxModel.marginTop = marginTop;
+        _boxModel.marginTop = marginTop;
         invalidate();
     }
 
@@ -304,7 +308,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get marginRight():Number
     {
-        return boxModel.marginRight;
+        return _boxModel.marginRight;
     }
 
     /**
@@ -312,7 +316,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set marginRight(marginRight:Number):void
     {
-        boxModel.marginRight = marginRight;
+        _boxModel.marginRight = marginRight;
         invalidate();
     }
 
@@ -322,7 +326,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get marginBottom():Number
     {
-        return boxModel.marginBottom;
+        return _boxModel.marginBottom;
     }
 
     /**
@@ -330,7 +334,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set marginBottom(marginBottom:Number):void
     {
-        boxModel.marginBottom = marginBottom;
+        _boxModel.marginBottom = marginBottom;
         invalidate();
     }
 
@@ -340,7 +344,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get marginLeft():Number
     {
-        return boxModel.marginLeft;
+        return _boxModel.marginLeft;
     }
 
     /**
@@ -348,7 +352,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set marginLeft(marginLeft:Number):void
     {
-        boxModel.marginLeft = marginLeft;
+        _boxModel.marginLeft = marginLeft;
         invalidate();
     }
 
@@ -358,7 +362,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderTop():Number
     {
-        return boxModel.borderTop;
+        return _boxModel.borderTop;
     }
 
     /**
@@ -366,7 +370,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderTop(borderTop:Number):void
     {
-        boxModel.borderTop = borderTop;
+        _boxModel.borderTop = borderTop;
         invalidate();
     }
 
@@ -376,7 +380,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderRight():Number
     {
-        return boxModel.borderRight;
+        return _boxModel.borderRight;
     }
 
     /**
@@ -384,7 +388,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderRight(borderRight:Number):void
     {
-        boxModel.borderRight = borderRight;
+        _boxModel.borderRight = borderRight;
         invalidate();
     }
 
@@ -394,7 +398,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderBottom():Number
     {
-        return boxModel.borderBottom;
+        return _boxModel.borderBottom;
     }
 
     /**
@@ -402,7 +406,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderBottom(borderBottom:Number):void
     {
-        boxModel.borderBottom = borderBottom;
+        _boxModel.borderBottom = borderBottom;
         invalidate();
     }
 
@@ -412,7 +416,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderLeft():Number
     {
-        return boxModel.borderLeft;
+        return _boxModel.borderLeft;
     }
 
     /**
@@ -420,7 +424,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderLeft(borderLeft:Number):void
     {
-        boxModel.borderLeft = borderLeft;
+        _boxModel.borderLeft = borderLeft;
         invalidate();
     }
 
@@ -430,7 +434,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderProperties():String
     {
-        return boxModel.borderProperties;
+        return _boxModel.borderProperties;
     }
 
     /**
@@ -438,7 +442,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderProperties(borderProperties:String):void
     {
-        boxModel.borderProperties = borderProperties;
+        _boxModel.borderProperties = borderProperties;
         invalidate();
     }
 
@@ -448,7 +452,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get borderAlpha():Number
     {
-        return boxModel.borderAlpha;
+        return _boxModel.borderAlpha;
     }
 
     /**
@@ -456,7 +460,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set borderAlpha(borderAlpha:Number):void
     {
-        boxModel.borderAlpha = borderAlpha;
+        _boxModel.borderAlpha = borderAlpha;
         invalidate();
     }
 
@@ -466,7 +470,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundPositionX():Number
     {
-        return boxModel.backgroundPositionX;
+        return _boxModel.backgroundPositionX;
     }
 
     /**
@@ -474,7 +478,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundPositionX(backgroundPositionX:Number):void
     {
-        boxModel.backgroundPositionX = backgroundPositionX;
+        _boxModel.backgroundPositionX = backgroundPositionX;
         invalidate();
     }
 
@@ -484,7 +488,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundPositionY():Number
     {
-        return boxModel.backgroundPositionY;
+        return _boxModel.backgroundPositionY;
     }
 
     /**
@@ -492,7 +496,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundPositionY(backgroundPositionY:Number):void
     {
-        boxModel.backgroundPositionY = backgroundPositionY;
+        _boxModel.backgroundPositionY = backgroundPositionY;
         invalidate();
     }
 
@@ -502,7 +506,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get debugPadding():Boolean
     {
-        return boxModel.debugPadding;
+        return _boxModel.debugPadding;
     }
 
     /**
@@ -510,7 +514,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set debugPadding(debugPadding:Boolean):void
     {
-        boxModel.debugPadding = debugPadding;
+        _boxModel.debugPadding = debugPadding;
         invalidate();
     }
 
@@ -520,7 +524,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get debugPaddingColor():uint
     {
-        return boxModel.debugPaddingColor;
+        return _boxModel.debugPaddingColor;
     }
 
     /**
@@ -528,7 +532,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set debugPaddingColor(debugPaddingColor:uint):void
     {
-        boxModel.debugPaddingColor = debugPaddingColor;
+        _boxModel.debugPaddingColor = debugPaddingColor;
         invalidate();
     }
 
@@ -538,7 +542,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundImageBitmap():Bitmap
     {
-        return boxModel.backgroundImageBitmap;
+        return _boxModel.backgroundImageBitmap;
     }
 
     /**
@@ -546,7 +550,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
     {
-        boxModel.backgroundImageBitmap = backgroundImageBitmap;
+        _boxModel.backgroundImageBitmap = backgroundImageBitmap;
         invalidate();
     }
 
@@ -556,7 +560,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function get backgroundImageAlpha():Number
     {
-        return boxModel.backgroundImageAlpha;
+        return _boxModel.backgroundImageAlpha;
     }
 
     /**
@@ -564,17 +568,8 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
     {
-        boxModel.backgroundImageAlpha = backgroundImageAlpha;
+        _boxModel.backgroundImageAlpha = backgroundImageAlpha;
         invalidate();
-    }
-
-    /**
-     * Aligns the display with the appripriate padding, border
-     */
-    protected function alignDisplay():void
-    {
-        display.x = paddingLeft + borderLeft;
-        display.y = paddingTop + borderTop;
     }
 
 
@@ -588,39 +583,39 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
     }
 
     public function clearProperties():void {
-        boxModel.clearProperties();
+        _boxModel.clearProperties();
         invalidate();
     }
 
     public function clearPadding():void {
-        boxModel.clearPadding();
+        _boxModel.clearPadding();
         invalidate();
     }
 
     public function clearMargin():void {
-        boxModel.clearMargin();
+        _boxModel.clearMargin();
         invalidate();
     }
 
     public function clearBorder():void {
-        boxModel.clearBorder();
+        _boxModel.clearBorder();
         invalidate();
     }
 
     public function clearBackground():void {
-        boxModel.clearBackground();
+        _boxModel.clearBackground();
         invalidate();
     }
 
     override public function set width(value:Number):void
     {
-        boxModel.width = value;
+        _boxModel.width = value;
         invalidate();
     }
 
     override public function set height(value:Number):void
     {
-        boxModel.height = value;
+        _boxModel.height = value;
         invalidate();
     }
 
@@ -679,12 +674,12 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
 
     protected function draw():void
     {
-        dispatchEvent(new Event(BoxModelDisplay.DRAW));
+        dispatchEvent(new Event(DRAW));
 
         //TODO This is removed because it is expensive
         //invalidationHash = new Dictionary();
 
-        drawBoxModel();
+        renderer.drawBoxModel();
     }
 
     protected function invalidate(type:String = "all"):void
@@ -737,133 +732,12 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
         addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, false, 0, true);
     }
 
-    /**
-     *
-     * @param tempBitmap
-     *
-     */
-
-    protected function sampleBackground(bitmap:Bitmap):void
-    {
-        boxModel.backgroundImageBitmap = new Bitmap(bitmap.bitmapData.clone());
-
-        if (backgroundScale9Grid)
-        {
-            boxModel.backgroundImageBitmap.scale9Grid = backgroundScale9Grid;
-        }
-
-        dispatchEvent(new Event(SAMPLE_BG));
-        invalidate();
+    public function get boxModel():IBoxModelRenderable {
+        return _boxModel;
     }
 
-    /**
-     *
-     *
-     */
-    protected function drawBoxModel():void
-    {
-
-        boxModel.calculatePadding();
-
-        boxModel.calculateBorder();
-
-        // Start drawing
-        graphics.clear();
-
-        // Create Border
-        if (hasBorder) drawBorder();
-        if (!isNaN(boxModel.backgroundColor)) drawBackgroundColor();
-
-        drawBackgroundImage();
-
-        graphics.endFill();
-
-        alignDisplay();
-
-    }
-
-    /**
-     *
-     */
-    protected function drawBorder():void
-    {
-        graphics.beginFill(boxModel.borderColor, borderAlpha);
-        graphics.drawRect(boxModel.borderRectX, boxModel.borderRectY, boxModel.borderRectWidth, boxModel.borderRectHeight);
-        graphics.drawRect(borderLeft, borderTop, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
-        //trace( borderLeft, borderTop, _paddingRectangle.width, _paddingRectangle.height );
-    }
-
-    /**
-     *
-     */
-    protected function drawBackgroundImage():void
-    {
-        //
-        if (boxModel.backgroundImageBitmap)
-        {
-            var bgiFullW:Number = paddingLeft + boxModel.displayWidth + paddingRight;
-            var bgiFullH:Number = paddingTop + boxModel.displayHeight + paddingBottom;
-
-            var bgiW:Number = boxModel.backgroundImageBitmap.width;
-            var bgiH:Number = boxModel.backgroundImageBitmap.height;
-
-            var bgX:Number = boxModel.paddingRectX;
-            var bgY:Number = boxModel.paddingRectY;
-
-            var m:Matrix = new Matrix();
-
-            var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
-
-            switch (backgroundRepeat)
-            {
-                case BgRepeatProps.NO_REPEAT:
-                    bgX = backgroundPositionX + borderLeft;
-                    bgY = backgroundPositionY + borderTop;
-                    m.translate(bgX, bgY);
-                    break;
-                case BgRepeatProps.REPEAT_X:
-                    bgiW = bgiFullW;
-                    m.translate(borderLeft, borderTop);
-                    break;
-                case BgRepeatProps.REPEAT_Y:
-                    bgiH = bgiFullH;
-                    m.translate(borderLeft, borderTop);
-                    break;
-                default:
-                    bgiW = bgiFullW;
-                    bgiH = bgiFullH;
-                    m.translate(borderLeft, borderTop);
-                    break;
-            }
-
-            bmd.draw(boxModel.backgroundImageBitmap, null, new ColorTransform(1, 1, 1, backgroundImageAlpha));
-
-            graphics.beginBitmapFill(bmd, m, true, false);
-            graphics.drawRect(bgX, bgY, bgiW, bgiH);
-            graphics.endFill();
-        }
-    }
-
-    /**
-     *
-     *
-     */
-    protected function drawBackgroundColor():void
-    {
-        var tempColor:uint = boxModel.debugPadding ? boxModel.debugPaddingColor : boxModel.backgroundColor;
-
-        backgroundColorAlpha = isNaN(backgroundColorAlpha) ? 1 : backgroundColorAlpha;
-
-        graphics.beginFill(tempColor, backgroundColorAlpha);
-        graphics.drawRect(boxModel.paddingRectX, boxModel.paddingRectY, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
-        graphics.endFill();
-
-        if (boxModel.debugPadding)
-        {
-            graphics.beginFill(boxModel.backgroundColor, backgroundColorAlpha);
-            graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, boxModel.displayWidth, boxModel.displayHeight);
-            graphics.endFill();
-        }
+    public function get display():DisplayObjectContainer {
+        return _display;
     }
 }
 }
