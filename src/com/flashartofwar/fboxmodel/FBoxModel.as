@@ -7,10 +7,10 @@ import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.DisplayObject;
 import flash.events.Event;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
-import flash.geom.Point;
 import flash.geom.Rectangle;
 
 public class FBoxModel extends BoxModelDisplay implements IBoxModel {
@@ -22,6 +22,8 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
     public function FBoxModel() {
         super();
         boxModel = new BoxModel(display);
+        //TODO this can removed once BoxModelRenderer is setup
+        addStageListeners();
     }
 
     /**
@@ -637,46 +639,102 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
     }
 
     /**
-     * The center point of the display object.
-     *
-     * @return Point
+     * Forces a redraw of the display
      */
-    public function get center():Point
+    override public function drawNow():void
     {
-        return new Point(x + ( width / 2 ), y + ( height / 2 ));
+        draw();
     }
 
     /**
-     * @private
+     *
+     * @param targetCoordinateSpace
+     * @return
+     *
      */
-    public function set center(point:Point):void
+    override public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
     {
-        x = point.x - ( width / 2 );
-        y = point.y - ( height / 2 );
+        var bounds:Rectangle = super.getBounds(targetCoordinateSpace);
+        return new Rectangle(bounds.x, bounds.y, width, height);
     }
 
     /**
-     * Moves the display object to a new position.
      *
-     * @param x
-     * @param y
+     * @param targetCoordinateSpace
+     * @return
+     *
      */
-    public function move(x:Number, y:Number):void
+    override public function getRect(targetCoordinateSpace:DisplayObject):Rectangle
     {
-        this.x = x;
-        this.y = y;
+        var rect:Rectangle = super.getRect(targetCoordinateSpace);
+        return new Rectangle(rect.x, rect.y, width, height);
     }
 
-    /**
-     * Resizes the diplay object's widht and height.
-     *
-     * @param width
-     * @param height
-     */
-    public function resize(width:Number, height:Number):void
+    //--------------------------------------------------------------------------------
+    //
+    // Protected Methods
+    //
+    //--------------------------------------------------------------------------------
+
+
+    protected function draw():void
     {
-        this.width = width;
-        this.height = height;
+        dispatchEvent(new Event(BoxModelDisplay.DRAW));
+
+        //TODO This is removed because it is expensive
+        //invalidationHash = new Dictionary();
+
+        drawBoxModel();
+    }
+
+    protected function invalidate(type:String = "all"):void
+    {
+        //TODO removed invalidationHash since we are not using it
+        //invalidationHash[ type ] = true;
+
+        //TODO This may be expensive, need to look into removing the Try Catch
+        if (!_invalid)
+        {
+            try
+            {
+                stage.invalidate();
+                _invalid = true;
+            }
+            catch(error:Error)
+            {
+                _invalid = false;
+            }
+        }
+    }
+
+    protected function onAddedToStage(event:Event):void
+    {
+        stage.addEventListener(Event.RENDER, onRender, false, 0, true);
+        draw();
+    }
+
+    protected function onRemovedFromStage(event:Event):void
+    {
+        removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+        removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+    }
+
+    protected function onRender(event:Event = null):void
+    {
+        if (_invalid)
+        {
+            draw();
+            _invalid = false;
+        }
+    }
+
+
+    // Renderer
+
+    protected function addStageListeners():void
+    {
+        addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
+        addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, false, 0, true);
     }
 
     /**
@@ -702,7 +760,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      *
      *
      */
-    override protected function draw():void
+    protected function drawBoxModel():void
     {
 
         boxModel.calculatePadding();
@@ -710,7 +768,7 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
         boxModel.calculateBorder();
 
         // Start drawing
-        $graphics.clear();
+        graphics.clear();
 
         // Create Border
         if (hasBorder) drawBorder();
@@ -718,11 +776,10 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
 
         drawBackgroundImage();
 
-        $graphics.endFill();
+        graphics.endFill();
 
         alignDisplay();
 
-        super.draw();
     }
 
     /**
@@ -730,9 +787,9 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
      */
     protected function drawBorder():void
     {
-        $graphics.beginFill(boxModel.borderColor, borderAlpha);
-        $graphics.drawRect(boxModel.borderRectX, boxModel.borderRectY, boxModel.borderRectWidth, boxModel.borderRectHeight);
-        $graphics.drawRect(borderLeft, borderTop, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
+        graphics.beginFill(boxModel.borderColor, borderAlpha);
+        graphics.drawRect(boxModel.borderRectX, boxModel.borderRectY, boxModel.borderRectWidth, boxModel.borderRectHeight);
+        graphics.drawRect(borderLeft, borderTop, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
         //trace( borderLeft, borderTop, _paddingRectangle.width, _paddingRectangle.height );
     }
 
@@ -781,9 +838,9 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
 
             bmd.draw(boxModel.backgroundImageBitmap, null, new ColorTransform(1, 1, 1, backgroundImageAlpha));
 
-            $graphics.beginBitmapFill(bmd, m, true, false);
-            $graphics.drawRect(bgX, bgY, bgiW, bgiH);
-            $graphics.endFill();
+            graphics.beginBitmapFill(bmd, m, true, false);
+            graphics.drawRect(bgX, bgY, bgiW, bgiH);
+            graphics.endFill();
         }
     }
 
@@ -797,15 +854,15 @@ public class FBoxModel extends BoxModelDisplay implements IBoxModel {
 
         backgroundColorAlpha = isNaN(backgroundColorAlpha) ? 1 : backgroundColorAlpha;
 
-        $graphics.beginFill(tempColor, backgroundColorAlpha);
-        $graphics.drawRect(boxModel.paddingRectX, boxModel.paddingRectY, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
-        $graphics.endFill();
+        graphics.beginFill(tempColor, backgroundColorAlpha);
+        graphics.drawRect(boxModel.paddingRectX, boxModel.paddingRectY, boxModel.paddingRectWidth, boxModel.paddingRectHeight);
+        graphics.endFill();
 
         if (boxModel.debugPadding)
         {
-            $graphics.beginFill(boxModel.backgroundColor, backgroundColorAlpha);
-            $graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, boxModel.displayWidth, boxModel.displayHeight);
-            $graphics.endFill();
+            graphics.beginFill(boxModel.backgroundColor, backgroundColorAlpha);
+            graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, boxModel.displayWidth, boxModel.displayHeight);
+            graphics.endFill();
         }
     }
 }

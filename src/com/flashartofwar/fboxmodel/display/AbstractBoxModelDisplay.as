@@ -1,7 +1,6 @@
 package com.flashartofwar.fboxmodel.display {
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
-import flash.display.Graphics;
 import flash.display.Sprite;
 import flash.errors.IllegalOperationError;
 import flash.utils.Dictionary;
@@ -18,7 +17,7 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
     public function AbstractBoxModelDisplay(self:AbstractBoxModelDisplay)
     {
         if (self != this)
-            throw new IllegalOperationError("AbstractDisplay cannot be instantiated directly.");
+            throw new IllegalOperationError("AbstractBoxModelDisplay cannot be instantiated directly.");
         else
             addDisplay();
     }
@@ -32,10 +31,10 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
     /**
      * @inheritDoc
      */
-    override public function get graphics():Graphics
-    {
-        return display.graphics;
-    }
+    /*override public function get graphics():Graphics
+     {
+     return display.graphics;
+     }*/
 
     /**
      * @inheritDoc
@@ -179,10 +178,10 @@ public class AbstractBoxModelDisplay extends Sprite implements IBoxModelDisplay
     /**
      * @private
      */
-    final protected function get $graphics():Graphics
-    {
-        return super.graphics;
-    }
+    /*final protected function get $graphics():Graphics
+     {
+     return super.graphics;
+     }*/
 
     public function drawNow():void {
 
