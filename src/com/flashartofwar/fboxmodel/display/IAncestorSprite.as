@@ -31,7 +31,7 @@
 package com.flashartofwar.fboxmodel.display {
 import flash.display.DisplayObject;
 
-public interface IBoxModelDisplay
+public interface IAncestorSprite
 {
     //TODO add all supporting props to this Interface
 

@@ -1,5 +1,5 @@
-package com.flashartofwar.fboxmodel {
-import com.flashartofwar.fboxmodel.display.BoxModelDisplayTest;
+package com.flashartofwar.boxmodel {
+import com.flashartofwar.boxmodel.display.BoxModelDisplayTest;
 
 [Suite]
 [RunWith("org.flexunit.runners.Suite")]

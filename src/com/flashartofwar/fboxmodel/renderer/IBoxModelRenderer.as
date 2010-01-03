@@ -14,6 +14,8 @@ public interface IBoxModelRenderer
 
     function get display():DisplayObjectContainer;
 
+    function set display(value:DisplayObjectContainer):void;
+
     function get stage():Stage;
 }
 }

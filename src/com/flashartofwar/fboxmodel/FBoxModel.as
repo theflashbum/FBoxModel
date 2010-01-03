@@ -2,7 +2,7 @@ package com.flashartofwar.fboxmodel {
 import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModelRenderable;
-import com.flashartofwar.fboxmodel.display.AbstractBoxModelDisplay;
+import com.flashartofwar.fboxmodel.display.AncestorSprite;
 import com.flashartofwar.fboxmodel.renderer.BoxModelRenderer;
 import com.flashartofwar.fboxmodel.renderer.IBoxModelRenderer;
 
@@ -13,7 +13,7 @@ import flash.display.DisplayObjectContainer;
 import flash.events.Event;
 import flash.geom.Rectangle;
 
-public class FBoxModel extends AbstractBoxModelDisplay implements IBoxModel,IBoxModelRenderer {
+public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRenderer {
 
     public static const DRAW:String = "draw";
 
@@ -738,6 +738,10 @@ public class FBoxModel extends AbstractBoxModelDisplay implements IBoxModel,IBox
 
     public function get display():DisplayObjectContainer {
         return _display;
+    }
+
+    public function set display(value:DisplayObjectContainer):void {
+        _display = value;
     }
 }
 }

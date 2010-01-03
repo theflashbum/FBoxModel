@@ -1,4 +1,4 @@
-package com.flashartofwar.fboxmodel.display {
+package com.flashartofwar.boxmodel.display {
 import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
 
 import flexunit.framework.Assert;
@@ -17,7 +17,7 @@ public class BoxModelDisplayTest
     [Test]
     public function testTidy():void
     {
-        boxModel = new BoxModel();
+        //boxModel = new BoxModel();
         Assert.assertNotNull(boxModel);
     }
 }
