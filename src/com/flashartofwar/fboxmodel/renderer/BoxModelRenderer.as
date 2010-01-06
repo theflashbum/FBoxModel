@@ -67,7 +67,8 @@ public class BoxModelRenderer {
 
         // Create Border
         if (boxModel.hasBorder) drawBorder();
-        if (!isNaN(boxModel.backgroundColor)) drawBackgroundColor();
+        //if (!isNaN(boxModel.backgroundColor)) drawBackgroundColor();
+        if (boxModel.hasBackgroundColor) drawBackgroundColor();
 
         drawBackgroundImage();
 

@@ -37,5 +37,7 @@ public interface IBoxModelRenderable extends IBoxModel {
     function get paddingRectHeight():Number;
 
     function get borderRectHeight():Number;
+
+    function get hasBackgroundColor():Boolean;
 }
 }

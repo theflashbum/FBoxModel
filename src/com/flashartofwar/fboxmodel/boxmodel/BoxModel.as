@@ -176,5 +176,9 @@ public class BoxModel extends AbstractBoxModel implements IBoxModelRenderable
     public function set paddingRectY(value:Number):void {
         _paddingRectangle.y = value;
     }
+
+    public function get hasBackgroundColor():Boolean {
+        return isNaN(_backgroundColor) ? false : true;
+    }
 }
 }
