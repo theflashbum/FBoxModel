@@ -18,6 +18,7 @@ public class BoxModelRenderer {
     protected var boxModel:IBoxModelRenderable;
     private var graphics:Graphics;
     private var display:DisplayObjectContainer;
+    protected var scaleBitmap:ScaleBitmap;
 
     public function BoxModelRenderer(target:IBoxModelRenderer) {
         this.target = target;
@@ -35,17 +36,7 @@ public class BoxModelRenderer {
     public function sampleBackground(bitmap:Bitmap):void
     {
 
-
-        if (boxModel.backgroundScale9Grid)
-        {
-            boxModel.backgroundImageBitmap = new ScaleBitmap(bitmap.bitmapData.clone());
-            boxModel.backgroundImageBitmap.scale9Grid = boxModel.backgroundScale9Grid;
-
-        }
-        else
-        {
-            boxModel.backgroundImageBitmap = new Bitmap(bitmap.bitmapData.clone());
-        }
+        boxModel.backgroundImageBitmap = new Bitmap(bitmap.bitmapData.clone());
 
         target.display.dispatchEvent(new Event(SAMPLE_BG));
 
@@ -110,7 +101,11 @@ public class BoxModelRenderer {
             var bgiFullH:Number = boxModel.paddingTop + boxModel.displayHeight + boxModel.paddingBottom;
 
             if (boxModel.backgroundScale9Grid)
+            {
+                boxModel.backgroundImageBitmap = new ScaleBitmap(boxModel.backgroundImageBitmap.bitmapData.clone());
+                boxModel.backgroundImageBitmap.scale9Grid = boxModel.backgroundScale9Grid;
                 (boxModel.backgroundImageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
+            }
 
             var bgiW:Number = boxModel.backgroundImageBitmap.width;
             var bgiH:Number = boxModel.backgroundImageBitmap.height;
