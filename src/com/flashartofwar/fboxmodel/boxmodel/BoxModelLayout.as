@@ -1,22 +1,14 @@
 package com.flashartofwar.fboxmodel.boxmodel {
 
-import flash.display.Bitmap;
-import flash.errors.IllegalOperationError;
-import flash.events.EventDispatcher;
+import flash.display.DisplayObject;
+import flash.display.Graphics;
 import flash.geom.Rectangle;
 
-internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
+internal class BoxModelLayout extends BoxModelBackground implements IBoxModel
 {
-    protected var DELIMITER:String = " ";
-
-    protected var _backgroundImageBitmap:Bitmap;
     protected var _paddingRectangle:Rectangle = new Rectangle();
     protected var _borderRectangle:Rectangle = new Rectangle();
-    protected var _backgroundColor:Number;
     protected var _borderColor:Number;
-    protected var _backgroundScale9Grid:Rectangle;
-    protected var _backgroundRepeat:String;
-    protected var _backgroundColorAlpha:Number;
     protected var _paddingTop:Number = 0;
     protected var _paddingRight:Number = 0;
     protected var _paddingBottom:Number = 0;
@@ -31,13 +23,7 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     protected var _borderLeft:Number = 0;
     protected var _borderProperties:String;
     protected var _borderAlpha:Number = 1;
-    protected var _backgroundPositionX:Number = 0;
-    protected var _backgroundPositionY:Number = 0;
-    protected var _debugPadding:Boolean = false;
-    protected var _debugPaddingColor:uint = 0xFFFF00;
-    protected var _backgroundImageAlpha:Number = 1;
-    protected var _width:Number = 0;
-    protected var _height:Number = 0;
+    protected var _display:DisplayObject;
 
     //--------------------------------------------------------------------------------
     //
@@ -48,10 +34,10 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     /**
      *
      */
-    public function AbstractBoxModel(self:AbstractBoxModel)
+    public function BoxModelLayout(graphics:Graphics, display:DisplayObject)
     {
-        if (self != this)
-            throw new IllegalOperationError("AbstractBoxModel cannot be instantiated directly.");
+        super(graphics);
+        _display = display;
     }
 
     //--------------------------------------------------------------------------------
@@ -59,24 +45,6 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     // Public Getters and Setters
     //
     //--------------------------------------------------------------------------------
-
-    /**
-     * The fill color of the background
-     * @return uint
-     */
-    public function get backgroundColor():uint
-    {
-        return _backgroundColor;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundColor(value:uint):void
-    {
-        _backgroundColor = value;
-
-    }
 
     /**
      * The fill color of the border
@@ -93,19 +61,6 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     public function set borderColor(value:uint):void
     {
         _borderColor = value;
-
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundPosition(value:String):void
-    {
-        var split:Array = value.split(DELIMITER, 2);
-
-        backgroundPositionX = Number(split[0]);
-        backgroundPositionY = Number(split[1]);
-
 
     }
 
@@ -160,14 +115,12 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
      */
     public function set border(value:String):void
     {
-        var values:Array = value.split(DELIMITER, 4);
+        var values:Array = value.split(delimiter, 4);
 
         borderTop = borderRight = borderBottom = borderLeft = values[0];
         borderProperties = values[1];
         borderColor = stringToColor(values[2]);
         borderAlpha = ( values[3] != null ) ? Number(values[3]) : 1;
-
-
     }
 
     protected function stringToColor(value:String):uint
@@ -184,60 +137,6 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     {
         var value:Number = borderTop + borderRight + borderBottom + borderLeft;
         return Boolean(value);
-    }
-
-    /**
-     * Scale9Grid of the background image
-     * @return Rectangle
-     */
-    public function get backgroundScale9Grid():Rectangle
-    {
-        return _backgroundScale9Grid;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
-    {
-        _backgroundScale9Grid = backgroundScale9Grid;
-
-    }
-
-    /**
-     * The repeat settings for the background image
-     * @return String
-     */
-    public function get backgroundRepeat():String
-    {
-        return _backgroundRepeat;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundRepeat(backgroundRepeat:String):void
-    {
-        _backgroundRepeat = backgroundRepeat;
-
-    }
-
-    /**
-     * The background fill alpha
-     * @return Number
-     */
-    public function get backgroundColorAlpha():Number
-    {
-        return _backgroundColorAlpha;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
-    {
-        _backgroundColorAlpha = backgroundColorAlpha;
-
     }
 
     /**
@@ -492,115 +391,6 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
 
     }
 
-    /**
-     * The Box Model background x position
-     * @return Number
-     */
-    public function get backgroundPositionX():Number
-    {
-        return _backgroundPositionX;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundPositionX(backgroundPositionX:Number):void
-    {
-        _backgroundPositionX = backgroundPositionX;
-
-    }
-
-    /**
-     * The Box Model background y position
-     * @return Number
-     */
-    public function get backgroundPositionY():Number
-    {
-        return _backgroundPositionY;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundPositionY(backgroundPositionY:Number):void
-    {
-        _backgroundPositionY = backgroundPositionY;
-
-    }
-
-    /**
-     * Whether or not to show the Box Model debug padding
-     * @return Boolean
-     */
-    public function get debugPadding():Boolean
-    {
-        return _debugPadding;
-    }
-
-    /**
-     * @private
-     */
-    public function set debugPadding(debugPadding:Boolean):void
-    {
-        _debugPadding = debugPadding;
-
-    }
-
-    /**
-     * The Box Model debug padding color
-     * @return uint
-     */
-    public function get debugPaddingColor():uint
-    {
-        return _debugPaddingColor;
-    }
-
-    /**
-     * @private
-     */
-    public function set debugPaddingColor(debugPaddingColor:uint):void
-    {
-        _debugPaddingColor = debugPaddingColor;
-
-    }
-
-    /**
-     * The Box Model background image
-     * @return Bitmap
-     */
-    public function get backgroundImageBitmap():Bitmap
-    {
-        return _backgroundImageBitmap;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
-    {
-        _backgroundImageBitmap = backgroundImageBitmap;
-
-    }
-
-    /**
-     * The Box Model background image alpha
-     * @return uint
-     */
-    public function get backgroundImageAlpha():Number
-    {
-        return _backgroundImageAlpha;
-    }
-
-    /**
-     * @private
-     */
-    public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
-    {
-        _backgroundImageAlpha = backgroundImageAlpha;
-
-    }
-
-
     //--------------------------------------------------------------------------------
     //
     // Public Methods
@@ -610,12 +400,12 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
     /**
      * Clears all Box Model Properties
      */
-    public function clearProperties():void
+    override public function clearProperties():void
     {
         clearPadding();
         clearMargin();
         clearBorder();
-        clearBackground();
+        super.clearProperties();
     }
 
     /**
@@ -643,22 +433,6 @@ internal class AbstractBoxModel extends EventDispatcher implements IBoxModel
         borderLeft = borderRight = borderBottom = borderLeft = 0;
         _borderColor = NaN;
     }
-
-    public function clearBackgroundImage():void
-    {
-        _backgroundImageBitmap = null;
-        _backgroundColor = NaN;
-    }
-
-    /**
-     * Clears the background of image and color
-     */
-    public function clearBackground():void
-    {
-        clearBackgroundImage();
-        backgroundColorAlpha = NaN;
-    }
-
 
     //--------------------------------------------------------------------------------
     //

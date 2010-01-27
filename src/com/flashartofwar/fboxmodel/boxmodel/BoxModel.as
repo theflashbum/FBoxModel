@@ -30,13 +30,13 @@
 
 package com.flashartofwar.fboxmodel.boxmodel {
 import flash.display.DisplayObject;
+import flash.display.Graphics;
 
 /**
  * @author jessefreeman
  */
-public class BoxModel extends AbstractBoxModel implements IBoxModelRenderable
+public class BoxModel extends BoxModelLayout implements IBoxModelRenderable
 {
-    protected var _display:DisplayObject;
 
     /**
      * <p>The boxmodel represents a key display manager for the framework. It is
@@ -44,81 +44,10 @@ public class BoxModel extends AbstractBoxModel implements IBoxModelRenderable
      *    images, borders, and aligning the AbstractModel's display. This is based on
      *    HTML's own CSS Box Model.</p>
      */
-    public function BoxModel(display:DisplayObject)
-    {
-        _display = display;
-        super(this);
-    }
 
-    public function get width():Number
+    public function BoxModel(graphics:Graphics, display:DisplayObject)
     {
-        var tempWidth:Number = _display.width > _width ? _display.width : _width;
-        return borderLeft + paddingLeft + tempWidth + paddingRight + borderRight;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function set width(value:Number):void
-    {
-        if (_width == value) return;
-        _width = ! isNaN(value) ? value : 0;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function get height():Number
-    {
-        var tempHeight:Number = _display.height > _height ? _display.height : _height;
-        return borderTop + paddingTop + tempHeight + paddingBottom + borderBottom;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function set height(value:Number):void
-    {
-        if (_height == value) return;
-        _height = ! isNaN(value) ? value : 0;
-    }
-
-    /**
-     * The width of the display container
-     * @return Number
-     */
-    public function get displayWidth():Number
-    {
-        return _display.width > _width ? _display.width : _width;
-    }
-
-    /**
-     * The height of the display container
-     * @return Number
-     */
-    public function get displayHeight():Number
-    {
-        return _display.height > _height ? _display.height : _height;
-    }
-
-    /**
-     * Calculates the size of the border rectangle
-     */
-    public function calculateBorder():void
-    {
-        borderRectWidth = paddingRectWidth + borderLeft + borderRight;
-        borderRectHeight = paddingRectHeight + borderTop + borderBottom;
-    }
-
-    /**
-     * Take content width and height + padding to calculate padding size
-     */
-    public function calculatePadding():void
-    {
-        paddingRectWidth = paddingLeft + displayWidth + paddingRight;
-        paddingRectHeight = paddingTop + displayHeight + paddingBottom;
-        paddingRectX = borderLeft;
-        paddingRectY = borderTop;
+        super(graphics, display);
     }
 
     public function get paddingRectX():Number {
@@ -180,5 +109,87 @@ public class BoxModel extends AbstractBoxModel implements IBoxModelRenderable
     public function get hasBackgroundColor():Boolean {
         return isNaN(_backgroundColor) ? false : true;
     }
+    
+    override public function get width():Number
+    {
+        var tempWidth:Number = _display.width > _width ? _display.width : _width;
+        return borderLeft + paddingLeft + tempWidth + paddingRight + borderRight;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function set width(value:Number):void
+    {
+        if (_width == value) return;
+        _width = ! isNaN(value) ? value : 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function get height():Number
+    {
+        var tempHeight:Number = _display.height > _height ? _display.height : _height;
+        return borderTop + paddingTop + tempHeight + paddingBottom + borderBottom;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    override public function set height(value:Number):void
+    {
+        if (_height == value) return;
+        _height = ! isNaN(value) ? value : 0;
+    }
+
+    /**
+     * The width of the display container
+     * @return Number
+     */
+    public function get displayWidth():Number
+    {
+        return _display.width > _width ? _display.width : _width;
+    }
+
+    /**
+     * The height of the display container
+     * @return Number
+     */
+    public function get displayHeight():Number
+    {
+        return _display.height > _height ? _display.height : _height;
+    }
+
+    override public function get offsetX():Number {
+        return _borderLeft;
+    }
+
+    override public function get offsetY():Number {
+        return _borderTop;
+    }
+
+    /**
+     * Calculates the size of the border rectangle
+     */
+    public function calculateBorder():void
+    {
+        borderRectWidth = paddingRectWidth + borderLeft + borderRight;
+        borderRectHeight = paddingRectHeight + borderTop + borderBottom;
+    }
+
+    /**
+     * Take content width and height + padding to calculate padding size
+     */
+    public function calculatePadding():void
+    {
+        paddingRectWidth = paddingLeft + displayWidth + paddingRight;
+        paddingRectHeight = paddingTop + displayHeight + paddingBottom;
+        paddingRectX = borderLeft;
+        paddingRectY = borderTop;
+    }
+
+
+
 }
 }

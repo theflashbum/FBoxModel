@@ -23,7 +23,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
 
     public function FBoxModel() {
         super(this);
-        _boxModel = new BoxModel(_display);
+        _boxModel = new BoxModel(this.graphics, _display);
         renderer = new BoxModelRenderer(this);
         //TODO this can removed once BoxModelRenderer is setup
         addStageListeners();
@@ -188,9 +188,9 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
     /**
      * @private
      */
-    public function set backgroundRepeat(backgroundRepeat:String):void
+    public function set backgroundRepeat(value:String):void
     {
-        _boxModel.backgroundRepeat = backgroundRepeat;
+        _boxModel.backgroundRepeat = value;
         invalidate();
     }
 
@@ -501,42 +501,6 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
     }
 
     /**
-     * Whether or not to show the Box Model debug padding
-     * @return Boolean
-     */
-    public function get debugPadding():Boolean
-    {
-        return _boxModel.debugPadding;
-    }
-
-    /**
-     * @private
-     */
-    public function set debugPadding(debugPadding:Boolean):void
-    {
-        _boxModel.debugPadding = debugPadding;
-        invalidate();
-    }
-
-    /**
-     * The Box Model debug padding color
-     * @return uint
-     */
-    public function get debugPaddingColor():uint
-    {
-        return _boxModel.debugPaddingColor;
-    }
-
-    /**
-     * @private
-     */
-    public function set debugPaddingColor(debugPaddingColor:uint):void
-    {
-        _boxModel.debugPaddingColor = debugPaddingColor;
-        invalidate();
-    }
-
-    /**
      * The Box Model background image
      * @return Bitmap
      */
@@ -742,6 +706,18 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
 
     public function set display(value:DisplayObjectContainer):void {
         _display = value;
+    }
+
+    public function get offsetX():Number {
+        return boxModel.offsetX;
+    }
+
+    public function get offsetY():Number {
+        return boxModel.offsetY;
+    }
+
+    public function get useBackgroundColor():Boolean {
+        return boxModel.useBackgroundColor;
     }
 }
 }

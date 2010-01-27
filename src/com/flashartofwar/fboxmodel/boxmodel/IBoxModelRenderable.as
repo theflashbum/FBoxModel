@@ -1,14 +1,5 @@
 package com.flashartofwar.fboxmodel.boxmodel {
-
-public interface IBoxModelRenderable extends IBoxModel {
-
-    function get width():Number;
-
-    function get height():Number;
-
-    function set width(value:Number):void;
-
-    function set height(value:Number):void;
+public interface IBoxModelRenderable extends IBoxModel, IBoxModelBackground {
 
     function get borderRectY():Number;
 
@@ -21,10 +12,6 @@ public interface IBoxModelRenderable extends IBoxModel {
     function get paddingRectX():Number;
 
     function set paddingRectX(value:Number):void;
-
-    function calculatePadding():void;
-
-    function calculateBorder():void;
 
     function get displayWidth():Number;
 
@@ -39,5 +26,9 @@ public interface IBoxModelRenderable extends IBoxModel {
     function get borderRectHeight():Number;
 
     function get hasBackgroundColor():Boolean;
+
+    function calculatePadding():void;
+
+    function calculateBorder():void;
 }
 }

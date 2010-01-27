@@ -31,14 +31,6 @@ public class AncestorSprite extends Sprite implements IAncestorSprite
     /**
      * @inheritDoc
      */
-    /*override public function get graphics():Graphics
-     {
-     return display.graphics;
-     }*/
-
-    /**
-     * @inheritDoc
-     */
     override public function get numChildren():int
     {
         return _display.numChildren;

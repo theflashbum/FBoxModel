@@ -30,13 +30,10 @@
 
 package com.flashartofwar.fboxmodel.boxmodel
 {
-import flash.display.Bitmap;
-import flash.geom.Rectangle;
-
 /**
  * @author jessefreeman
  */
-public interface IBoxModel
+public interface IBoxModel extends IBoxModelBackground
 {
     function clearProperties():void;
 
@@ -47,20 +44,6 @@ public interface IBoxModel
     function clearBorder():void;
 
     function clearBackground():void;
-
-
-    function get backgroundColor():uint;
-
-    function set backgroundColor(value:uint):void;
-
-
-    function get debugPadding():Boolean;
-
-    function set debugPadding(debugPadding:Boolean):void;
-
-    function get debugPaddingColor():uint;
-
-    function set debugPaddingColor(debugPaddingColor:uint):void;
 
     function get margin():Array;
 
@@ -92,23 +75,11 @@ public interface IBoxModel
 
     function set borderTop(borderTop:Number):void;
 
-    function get backgroundImageAlpha():Number;
-
-    function set backgroundImageAlpha(backgroundImageAlpha:Number):void;
-
     function set backgroundPosition(value:String):void;
 
     function get marginBottom():Number;
 
     function set marginBottom(marginBottom:Number):void;
-
-    function get backgroundPositionY():Number;
-
-    function set backgroundPositionY(backgroundPositionY:Number):void;
-
-    function get backgroundPositionX():Number;
-
-    function set backgroundPositionX(backgroundPositionX:Number):void;
 
     function get borderColor():uint;
 
@@ -118,25 +89,9 @@ public interface IBoxModel
 
     function set borderLeft(borderLeft:Number):void;
 
-    function get backgroundImageBitmap():Bitmap;
-
-    function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void;
-
     function get marginTop():Number;
 
     function set marginTop(marginTop:Number):void;
-
-    function get backgroundColorAlpha():Number;
-
-    function set backgroundColorAlpha(backgroundColorAlpha:Number):void;
-
-    function get backgroundScale9Grid():Rectangle;
-
-    function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void;
-
-    function get backgroundRepeat():String;
-
-    function set backgroundRepeat(backgroundRepeat:String):void;
 
     function get padding():Array;
 
