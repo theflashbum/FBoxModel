@@ -1,4 +1,4 @@
-package com.flashartofwar.fboxmodel.boxmodel
+package com.flashartofwar.fboxmodel.decorators
 {
 import flash.display.Bitmap;
 import flash.display.Graphics;
@@ -18,8 +18,6 @@ public interface IBoxModelBackground {
 
     function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void;
 
-    function get graphics():Graphics;
-
     function get width():Number;
 
     function set width(value:Number):void;
@@ -31,10 +29,6 @@ public interface IBoxModelBackground {
     function get backgroundRepeat():String;
 
     function set backgroundRepeat(value:String):void;
-
-    function get offsetX():Number;
-
-    function get offsetY():Number;
 
     function get backgroundPositionY():Number;
 

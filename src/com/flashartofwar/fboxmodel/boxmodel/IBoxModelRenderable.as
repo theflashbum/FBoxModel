@@ -1,4 +1,7 @@
 package com.flashartofwar.fboxmodel.boxmodel {
+import com.flashartofwar.fboxmodel.IBoxModel;
+import com.flashartofwar.fboxmodel.decorators.IBoxModelBackground;
+
 public interface IBoxModelRenderable extends IBoxModel, IBoxModelBackground {
 
     function get borderRectY():Number;

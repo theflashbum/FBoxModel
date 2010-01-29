@@ -1,5 +1,7 @@
 package com.flashartofwar.fboxmodel.boxmodel {
 
+import com.flashartofwar.fboxmodel.IBoxModel;
+
 import flash.display.DisplayObject;
 import flash.display.Graphics;
 import flash.geom.Rectangle;

@@ -1,5 +1,7 @@
 package com.flashartofwar.fboxmodel.boxmodel {
 
+import com.flashartofwar.fboxmodel.decorators.IBoxModelBackground;
+
 import flash.display.Bitmap;
 import flash.display.Graphics;
 import flash.events.EventDispatcher;

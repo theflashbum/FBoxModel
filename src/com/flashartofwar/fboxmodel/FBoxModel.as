@@ -1,6 +1,6 @@
 package com.flashartofwar.fboxmodel {
 import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
-import com.flashartofwar.fboxmodel.boxmodel.IBoxModel;
+import com.flashartofwar.fboxmodel.IBoxModel;
 import com.flashartofwar.fboxmodel.boxmodel.IBoxModelRenderable;
 import com.flashartofwar.fboxmodel.display.AncestorSprite;
 import com.flashartofwar.fboxmodel.renderer.BoxModelRenderer;
@@ -643,7 +643,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
         //TODO This is removed because it is expensive
         //invalidationHash = new Dictionary();
 
-        renderer.drawBoxModel();
+        renderer.draw();
     }
 
     protected function invalidate(type:String = "all"):void
@@ -708,13 +708,13 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
         _display = value;
     }
 
-    public function get offsetX():Number {
+    /*public function get offsetX():Number {
         return boxModel.offsetX;
     }
 
     public function get offsetY():Number {
         return boxModel.offsetY;
-    }
+    }*/
 
     public function get useBackgroundColor():Boolean {
         return boxModel.useBackgroundColor;

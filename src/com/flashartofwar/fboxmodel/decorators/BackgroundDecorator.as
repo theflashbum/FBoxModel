@@ -1,71 +1,193 @@
 package com.flashartofwar.fboxmodel.decorators{
-import com.flashartofwar.fboxmodel.boxmodel.IBoxModelBackground;
 import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
 
+import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Graphics;
 import flash.geom.ColorTransform;
 import flash.geom.Matrix;
+import flash.geom.Rectangle;
 
-public class BackgroundDecorator {
-    
-    protected var target:IBoxModelBackground;
-    
-    public function BackgroundDecorator(target:IBoxModelBackground) {
-                
-        this.target = target;
+public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
+
+    protected var _backgroundImageBitmap:Bitmap;
+    protected var _backgroundColorAlpha:Number;
+    protected var _backgroundScale9Grid:Rectangle;
+    protected var _backgroundRepeat:String;
+    protected var _offsetX:Number;
+    protected var _offsetY:Number;
+    protected var _backgroundPositionY:Number;
+    protected var _backgroundPositionX:Number;
+    protected var _backgroundImageAlpha:Number;
+    protected var _backgroundColor:uint;
+    protected var _width:Number;
+    protected var _height:Number;
+    protected var _graphics:Graphics;
+
+    public function BackgroundDecorator(graphics:Graphics) {
+        this.graphics = graphics
     }
 
+    public function get backgroundImageBitmap():Bitmap {
+        return _backgroundImageBitmap;
+    }
+
+    public function set backgroundImageBitmap(value:Bitmap):void {
+        backgroundImageBitmap = value;
+    }
+
+    public function get backgroundColorAlpha():Number {
+        return _backgroundColorAlpha;
+    }
+
+    public function set backgroundColorAlpha(value:Number):void {
+        _backgroundColorAlpha = value;
+    }
+
+    public function get backgroundScale9Grid():Rectangle {
+        return _backgroundScale9Grid;
+    }
+    
+    public function set backgroundScale9Grid(value:Rectangle):void {
+        _backgroundScale9Grid = value;
+    }
+
+    public function get width():Number {
+        return _width;
+    }
+
+    public function set width(value:Number):void {
+        _width = value;
+    }
+
+    public function get height():Number {
+        return _height;
+    }
+
+    public function set height(value:Number):void {
+        _height = value;
+    }
+
+    public function get backgroundRepeat():String {
+        return _backgroundRepeat;
+    }
+
+    public function set backgroundRepeat(value:String):void {
+        _backgroundRepeat = value; 
+    }
+
+    public function get offsetX():Number {
+        return _offsetX;
+    }
+
+    public function set offsetX(value:Number):void {
+        _offsetX = value;
+    }
+
+    public function get offsetY():Number {
+        return _offsetY;
+    }
+
+    public function set offsetY(value:Number):void {
+        _offsetY = value;
+    }
+
+    public function get backgroundPositionY():Number {
+        return _backgroundPositionY;
+    }
+
+    public function set backgroundPositionY(value:Number):void {
+        _backgroundPositionY = value;
+    }
+
+    public function get backgroundPositionX():Number {
+        return _backgroundPositionX;
+    }
+
+    public function set backgroundPositionX(value:Number):void {
+        _backgroundPositionX = value;
+    }
+
+    public function get backgroundImageAlpha():Number {
+        return _backgroundImageAlpha;
+    }
+
+    public function set backgroundImageAlpha(value:Number):void {
+        _backgroundImageAlpha = value;
+    }
+
+    public function get backgroundColor():uint {
+        return _backgroundColor;
+    }
+
+    public function set backgroundColor(value:uint):void {
+        _backgroundColor = value;
+    }
+
+    public function get useBackgroundColor():Boolean {
+        return !isNaN(backgroundColor);
+    }
+
+    protected function set graphics(value:Graphics):void
+    {
+        _graphics = value;
+    }
+
+    protected function get graphics():Graphics
+    {
+        return _graphics;
+    }
     /**
      *
      */
     protected function drawBackgroundImage():void
     {
         //
-        if (target.backgroundImageBitmap)
+        if (backgroundImageBitmap)
         {
-            var bgiFullW:Number = target.width;
-            var bgiFullH:Number = target.height;
+            var bgiFullW:Number = width;
+            var bgiFullH:Number = height;
 
-            if (target.backgroundScale9Grid)
+            if (backgroundScale9Grid)
             {
-                target.backgroundImageBitmap = new ScaleBitmap(target.backgroundImageBitmap.bitmapData);
-                target.backgroundImageBitmap.scale9Grid = target.backgroundScale9Grid;
-                (target.backgroundImageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
+                backgroundImageBitmap = new ScaleBitmap(backgroundImageBitmap.bitmapData);
+                backgroundImageBitmap.scale9Grid = backgroundScale9Grid;
+                (backgroundImageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
             }
 
-            var bgiW:Number = target.backgroundImageBitmap.width;
-            var bgiH:Number = target.backgroundImageBitmap.height;
+            var bgiW:Number = backgroundImageBitmap.width;
+            var bgiH:Number = backgroundImageBitmap.height;
 
             var m:Matrix = new Matrix();
 
             var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
 
-            switch (target.backgroundRepeat)
+            switch (backgroundRepeat)
             {
                 case BgRepeatProps.NO_REPEAT:
-                    m.translate(target.offsetX + target.backgroundPositionX, target.offsetY + target.backgroundPositionY);
+                    m.translate(offsetX + backgroundPositionX, offsetY + backgroundPositionY);
                     break;
                 case BgRepeatProps.REPEAT_X:
                     bgiW = bgiFullW;
-                    m.translate(target.offsetX, target.offsetY);
+                    m.translate(offsetX, offsetY);
                     break;
                 case BgRepeatProps.REPEAT_Y:
                     bgiH = bgiFullH;
-                    m.translate(target.offsetX, target.offsetY);
+                    m.translate(offsetX, offsetY);
                     break;
 
                 default:
                     bgiW = bgiFullW;
                     bgiH = bgiFullH;
-                    m.translate(target.offsetX, target.offsetY);
+                    m.translate(offsetX, offsetY);
                     break;
             }
 
-            bmd.draw(target.backgroundImageBitmap, null, new ColorTransform(1, 1, 1, target.backgroundImageAlpha));
+            bmd.draw(backgroundImageBitmap, null, new ColorTransform(1, 1, 1, backgroundImageAlpha));
 
-            target.graphics.beginBitmapFill(bmd, m, true, false);
-            target.graphics.drawRect(target.offsetX, target.offsetY, bgiW, bgiH);
-            target.graphics.endFill();
+            graphics.beginBitmapFill(bmd, m, true, false);
+            graphics.drawRect(offsetX, offsetY, bgiW, bgiH);
+            graphics.endFill();
         }
 
     }
@@ -77,11 +199,11 @@ public class BackgroundDecorator {
     protected function drawBackgroundColor():void
     {
 
-        target.backgroundColorAlpha = isNaN(target.backgroundColorAlpha) ? 1 : target.backgroundColorAlpha;
+        backgroundColorAlpha = isNaN(backgroundColorAlpha) ? 1 : backgroundColorAlpha;
 
-        target.graphics.beginFill(target.backgroundColor, target.backgroundColorAlpha);
-        target.graphics.drawRect(target.offsetX, target.offsetY, target.width, target.height);
-        target.graphics.endFill();
+        graphics.beginFill(backgroundColor, backgroundColorAlpha);
+        graphics.drawRect(offsetX, offsetY, width, height);
+        graphics.endFill();
 
     }
 
@@ -92,16 +214,14 @@ public class BackgroundDecorator {
     public function draw():void
     {
         // Start drawing
-        if(target.graphics)
-        {
-            target.graphics.clear();
 
-            if (target.useBackgroundColor) drawBackgroundColor();
+        //graphics.clear();
 
-            drawBackgroundImage();
+        if (useBackgroundColor) drawBackgroundColor();
 
-            target.graphics.endFill();
-        }
+        drawBackgroundImage();
+
+        graphics.endFill();
     }
 
 
@@ -230,12 +350,12 @@ internal class ScaleBitmap extends Bitmap {
      * assignBitmapData
      * Update the effective bitmapData
      */
-    private function assignBitmapData(bmp:BitmapData):void {
+    protected function assignBitmapData(bmp:BitmapData):void {
         super.bitmapData.dispose();
         super.bitmapData = bmp;
     }
 
-    private function validGrid(r:Rectangle):Boolean {
+    protected function validGrid(r:Rectangle):Boolean {
         return r.right <= _originalBitmap.width && r.bottom <= _originalBitmap.height;
     }
 

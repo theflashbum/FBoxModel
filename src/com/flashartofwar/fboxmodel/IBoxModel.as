@@ -28,8 +28,10 @@
  *
  */
 
-package com.flashartofwar.fboxmodel.boxmodel
+package com.flashartofwar.fboxmodel
 {
+import com.flashartofwar.fboxmodel.decorators.IBoxModelBackground;
+
 /**
  * @author jessefreeman
  */
