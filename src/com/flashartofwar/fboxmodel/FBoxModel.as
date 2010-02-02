@@ -1,7 +1,4 @@
 package com.flashartofwar.fboxmodel {
-import com.flashartofwar.fboxmodel.boxmodel.BoxModel;
-import com.flashartofwar.fboxmodel.boxmodel.IBoxModel;
-import com.flashartofwar.fboxmodel.boxmodel.IBoxModelRenderable;
 import com.flashartofwar.fboxmodel.display.AncestorSprite;
 import com.flashartofwar.fboxmodel.renderer.BoxModelRenderer;
 import com.flashartofwar.fboxmodel.renderer.IBoxModelRenderer;
@@ -18,12 +15,10 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
     public static const DRAW:String = "draw";
 
     protected var _invalid:Boolean;
-    protected var _boxModel:IBoxModelRenderable;
     protected var renderer:BoxModelRenderer;
 
     public function FBoxModel() {
         super(this);
-        _boxModel = new BoxModel(_display);
         renderer = new BoxModelRenderer(this);
         //TODO this can removed once BoxModelRenderer is setup
         addStageListeners();
@@ -36,7 +31,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundColor():uint
     {
-        return _boxModel.backgroundColor;
+        return renderer.backgroundColor;
     }
 
     /**
@@ -44,7 +39,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundColor(value:uint):void
     {
-        _boxModel.backgroundColor = value;
+        renderer.backgroundColor = value;
         invalidate();
     }
 
@@ -54,7 +49,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderColor():uint
     {
-        return _boxModel.borderColor;
+        return renderer.borderColor;
     }
 
     /**
@@ -62,7 +57,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderColor(value:uint):void
     {
-        _boxModel.borderColor = value;
+        renderer.borderColor = value;
         invalidate();
     }
 
@@ -71,7 +66,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundPosition(value:String):void
     {
-        _boxModel.backgroundPosition = value;
+        renderer.backgroundPosition = value;
 
         invalidate();
     }
@@ -90,7 +85,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set padding(values:Array):void
     {
-        _boxModel.padding = values;
+        renderer.padding = values;
         invalidate();
     }
 
@@ -108,7 +103,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set margin(values:Array):void
     {
-        _boxModel.margin = values;
+        renderer.margin = values;
 
         invalidate();
     }
@@ -119,7 +114,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     override public function get width():Number
     {
-        return _boxModel.width;
+        return renderer.width;
     }
 
     /**
@@ -128,7 +123,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     override public function get height():Number
     {
-        return _boxModel.height;
+        return renderer.height;
     }
 
     /**
@@ -136,7 +131,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set border(value:String):void
     {
-        _boxModel.border = value;
+        renderer.border = value;
 
         invalidate();
     }
@@ -164,7 +159,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundScale9Grid():Rectangle
     {
-        return _boxModel.backgroundScale9Grid;
+        return renderer.backgroundScale9Grid;
     }
 
     /**
@@ -172,7 +167,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
     {
-        _boxModel.backgroundScale9Grid = backgroundScale9Grid;
+        renderer.backgroundScale9Grid = backgroundScale9Grid;
         invalidate();
     }
 
@@ -182,7 +177,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundRepeat():String
     {
-        return _boxModel.backgroundRepeat;
+        return renderer.backgroundRepeat;
     }
 
     /**
@@ -190,7 +185,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundRepeat(backgroundRepeat:String):void
     {
-        _boxModel.backgroundRepeat = backgroundRepeat;
+        renderer.backgroundRepeat = backgroundRepeat;
         invalidate();
     }
 
@@ -200,7 +195,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundColorAlpha():Number
     {
-        return _boxModel.backgroundColorAlpha;
+        return renderer.backgroundColorAlpha;
     }
 
     /**
@@ -208,7 +203,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
     {
-        _boxModel.backgroundColorAlpha = backgroundColorAlpha;
+        renderer.backgroundColorAlpha = backgroundColorAlpha;
         invalidate();
     }
 
@@ -218,7 +213,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get paddingTop():Number
     {
-        return _boxModel.paddingTop;
+        return renderer.paddingTop;
     }
 
     /**
@@ -226,7 +221,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set paddingTop(paddingTop:Number):void
     {
-        _boxModel.paddingTop = paddingTop;
+        renderer.paddingTop = paddingTop;
         invalidate();
     }
 
@@ -236,7 +231,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get paddingRight():Number
     {
-        return _boxModel.paddingRight;
+        return renderer.paddingRight;
     }
 
     /**
@@ -244,7 +239,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set paddingRight(paddingRight:Number):void
     {
-        _boxModel.paddingRight = paddingRight;
+        renderer.paddingRight = paddingRight;
         invalidate();
     }
 
@@ -254,7 +249,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get paddingBottom():Number
     {
-        return _boxModel.paddingBottom;
+        return renderer.paddingBottom;
     }
 
     /**
@@ -262,7 +257,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set paddingBottom(paddingBottom:Number):void
     {
-        _boxModel.paddingBottom = paddingBottom;
+        renderer.paddingBottom = paddingBottom;
         invalidate();
     }
 
@@ -272,7 +267,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get paddingLeft():Number
     {
-        return _boxModel.paddingLeft;
+        return renderer.paddingLeft;
     }
 
     /**
@@ -280,7 +275,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set paddingLeft(paddingLeft:Number):void
     {
-        _boxModel.paddingLeft = paddingLeft;
+        renderer.paddingLeft = paddingLeft;
         invalidate();
     }
 
@@ -290,7 +285,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get marginTop():Number
     {
-        return _boxModel.marginTop;
+        return renderer.marginTop;
     }
 
     /**
@@ -298,7 +293,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set marginTop(marginTop:Number):void
     {
-        _boxModel.marginTop = marginTop;
+        renderer.marginTop = marginTop;
         invalidate();
     }
 
@@ -308,7 +303,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get marginRight():Number
     {
-        return _boxModel.marginRight;
+        return renderer.marginRight;
     }
 
     /**
@@ -316,7 +311,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set marginRight(marginRight:Number):void
     {
-        _boxModel.marginRight = marginRight;
+        renderer.marginRight = marginRight;
         invalidate();
     }
 
@@ -326,7 +321,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get marginBottom():Number
     {
-        return _boxModel.marginBottom;
+        return renderer.marginBottom;
     }
 
     /**
@@ -334,7 +329,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set marginBottom(marginBottom:Number):void
     {
-        _boxModel.marginBottom = marginBottom;
+        renderer.marginBottom = marginBottom;
         invalidate();
     }
 
@@ -344,7 +339,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get marginLeft():Number
     {
-        return _boxModel.marginLeft;
+        return renderer.marginLeft;
     }
 
     /**
@@ -352,7 +347,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set marginLeft(marginLeft:Number):void
     {
-        _boxModel.marginLeft = marginLeft;
+        renderer.marginLeft = marginLeft;
         invalidate();
     }
 
@@ -362,7 +357,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderTop():Number
     {
-        return _boxModel.borderTop;
+        return renderer.borderTop;
     }
 
     /**
@@ -370,7 +365,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderTop(borderTop:Number):void
     {
-        _boxModel.borderTop = borderTop;
+        renderer.borderTop = borderTop;
         invalidate();
     }
 
@@ -380,7 +375,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderRight():Number
     {
-        return _boxModel.borderRight;
+        return renderer.borderRight;
     }
 
     /**
@@ -388,7 +383,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderRight(borderRight:Number):void
     {
-        _boxModel.borderRight = borderRight;
+        renderer.borderRight = borderRight;
         invalidate();
     }
 
@@ -398,7 +393,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderBottom():Number
     {
-        return _boxModel.borderBottom;
+        return renderer.borderBottom;
     }
 
     /**
@@ -406,7 +401,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderBottom(borderBottom:Number):void
     {
-        _boxModel.borderBottom = borderBottom;
+        renderer.borderBottom = borderBottom;
         invalidate();
     }
 
@@ -416,7 +411,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderLeft():Number
     {
-        return _boxModel.borderLeft;
+        return renderer.borderLeft;
     }
 
     /**
@@ -424,25 +419,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderLeft(borderLeft:Number):void
     {
-        _boxModel.borderLeft = borderLeft;
-        invalidate();
-    }
-
-    /**
-     * The Box Model border properties
-     * @return String
-     */
-    public function get borderProperties():String
-    {
-        return _boxModel.borderProperties;
-    }
-
-    /**
-     * @private
-     */
-    public function set borderProperties(borderProperties:String):void
-    {
-        _boxModel.borderProperties = borderProperties;
+        renderer.borderLeft = borderLeft;
         invalidate();
     }
 
@@ -452,7 +429,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get borderAlpha():Number
     {
-        return _boxModel.borderAlpha;
+        return renderer.borderAlpha;
     }
 
     /**
@@ -460,7 +437,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set borderAlpha(borderAlpha:Number):void
     {
-        _boxModel.borderAlpha = borderAlpha;
+        renderer.borderAlpha = borderAlpha;
         invalidate();
     }
 
@@ -470,7 +447,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundPositionX():Number
     {
-        return _boxModel.backgroundPositionX;
+        return renderer.backgroundPositionX;
     }
 
     /**
@@ -478,7 +455,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundPositionX(backgroundPositionX:Number):void
     {
-        _boxModel.backgroundPositionX = backgroundPositionX;
+        renderer.backgroundPositionX = backgroundPositionX;
         invalidate();
     }
 
@@ -488,7 +465,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundPositionY():Number
     {
-        return _boxModel.backgroundPositionY;
+        return renderer.backgroundPositionY;
     }
 
     /**
@@ -496,7 +473,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundPositionY(backgroundPositionY:Number):void
     {
-        _boxModel.backgroundPositionY = backgroundPositionY;
+        renderer.backgroundPositionY = backgroundPositionY;
         invalidate();
     }
 
@@ -506,7 +483,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get debugPadding():Boolean
     {
-        return _boxModel.debugPadding;
+        return renderer.debugPadding;
     }
 
     /**
@@ -514,7 +491,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set debugPadding(debugPadding:Boolean):void
     {
-        _boxModel.debugPadding = debugPadding;
+        renderer.debugPadding = debugPadding;
         invalidate();
     }
 
@@ -524,7 +501,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get debugPaddingColor():uint
     {
-        return _boxModel.debugPaddingColor;
+        return renderer.debugPaddingColor;
     }
 
     /**
@@ -532,7 +509,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set debugPaddingColor(debugPaddingColor:uint):void
     {
-        _boxModel.debugPaddingColor = debugPaddingColor;
+        renderer.debugPaddingColor = debugPaddingColor;
         invalidate();
     }
 
@@ -542,7 +519,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundImageBitmap():Bitmap
     {
-        return _boxModel.backgroundImageBitmap;
+        return renderer.backgroundImageBitmap;
     }
 
     /**
@@ -550,7 +527,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
     {
-        _boxModel.backgroundImageBitmap = backgroundImageBitmap;
+        renderer.backgroundImageBitmap = backgroundImageBitmap;
         invalidate();
     }
 
@@ -560,7 +537,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function get backgroundImageAlpha():Number
     {
-        return _boxModel.backgroundImageAlpha;
+        return renderer.backgroundImageAlpha;
     }
 
     /**
@@ -568,7 +545,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
      */
     public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
     {
-        _boxModel.backgroundImageAlpha = backgroundImageAlpha;
+        renderer.backgroundImageAlpha = backgroundImageAlpha;
         invalidate();
     }
 
@@ -583,39 +560,39 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
     }
 
     public function clearProperties():void {
-        _boxModel.clearProperties();
+        renderer.clearProperties();
         invalidate();
     }
 
     public function clearPadding():void {
-        _boxModel.clearPadding();
+        renderer.clearPadding();
         invalidate();
     }
 
     public function clearMargin():void {
-        _boxModel.clearMargin();
+        renderer.clearMargin();
         invalidate();
     }
 
     public function clearBorder():void {
-        _boxModel.clearBorder();
+        renderer.clearBorder();
         invalidate();
     }
 
     public function clearBackground():void {
-        _boxModel.clearBackground();
+        renderer.clearBackground();
         invalidate();
     }
 
     override public function set width(value:Number):void
     {
-        _boxModel.width = value;
+        renderer.width = value;
         invalidate();
     }
 
     override public function set height(value:Number):void
     {
-        _boxModel.height = value;
+        renderer.height = value;
         invalidate();
     }
 
@@ -732,10 +709,6 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
         addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, false, 0, true);
     }
 
-    public function get boxModel():IBoxModelRenderable {
-        return _boxModel;
-    }
-
     public function get display():DisplayObjectContainer {
         return _display;
     }
@@ -743,5 +716,6 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
     public function set display(value:DisplayObjectContainer):void {
         _display = value;
     }
+
 }
 }

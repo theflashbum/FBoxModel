@@ -28,8 +28,7 @@
  *
  */
 
-package com.flashartofwar.fboxmodel.boxmodel
-{
+package {
 import flash.display.Bitmap;
 import flash.geom.Rectangle;
 
@@ -141,10 +140,6 @@ public interface IBoxModel
     function get padding():Array;
 
     function set padding(values:Array):void;
-
-    function get borderProperties():String;
-
-    function set borderProperties(borderProperties:String):void;
 
     function get paddingTop():Number;
 
