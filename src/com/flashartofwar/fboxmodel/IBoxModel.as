@@ -28,7 +28,7 @@
  *
  */
 
-package {
+package com.flashartofwar.fboxmodel{
 import flash.display.Bitmap;
 import flash.geom.Rectangle;
 

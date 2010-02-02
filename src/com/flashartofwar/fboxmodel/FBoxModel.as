@@ -19,7 +19,7 @@ public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRend
 
     public function FBoxModel() {
         super(this);
-        renderer = new BoxModelRenderer(this);
+        renderer = new BoxModelRenderer(_display, graphics);
         //TODO this can removed once BoxModelRenderer is setup
         addStageListeners();
     }

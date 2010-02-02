@@ -1,36 +1,47 @@
 package com.flashartofwar.fboxmodel.renderer {
+import com.flashartofwar.fboxmodel.decorators.BackgroundDecorator;
 import com.flashartofwar.fboxmodel.decorators.BorderDecorator;
 import com.flashartofwar.fboxmodel.decorators.PaddingDecorator;
-import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
 
 import flash.display.Bitmap;
-import flash.display.BitmapData;
+import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Graphics;
 import flash.events.Event;
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
 public class BoxModelRenderer {
 
     public static const SAMPLE_BG:String = "sampleBackground";
 
-    protected var target:IBoxModelRenderer;
-    private var graphics:Graphics;
-    private var display:DisplayObjectContainer;
+    protected var graphics:Graphics;
+    protected var display:DisplayObjectContainer;
+    protected var borderDecorator:BorderDecorator;
+    protected var paddingDecorator:PaddingDecorator;
+    protected var backgroundDecorator:BackgroundDecorator;
+    protected var DELIMITER:String = " ";
+    protected var _marginTop:Number = 0;
+    protected var _marginRight:Number = 0;
+    protected var _marginBottom:Number = 0;
+    protected var _marginLeft:Number = 0;
+    protected var _debugPadding:Boolean = false;
+    protected var _debugPaddingColor:uint = 0xFFFF00;
+    protected var _width:Number = 0;
+    protected var _height:Number = 0;
 
-    private var borderDecorator:BorderDecorator;
-    private var paddingDecorator:PaddingDecorator;
+    public function BoxModelRenderer(display:DisplayObjectContainer, graphics:Graphics) {
 
-    public function BoxModelRenderer(target:IBoxModelRenderer) {
-        this.target = target;
-        
-        graphics = target.graphics;
-        display = target.display;
+        this.graphics = graphics;
+        this.display = display;
 
+        createBoxModelDecorators(graphics, display);
+    }
+
+     private function createBoxModelDecorators(graphics:Graphics, display:DisplayObjectContainer):void
+    {
         borderDecorator = new BorderDecorator(graphics);
-        paddingDecorator = new PaddingDecorator(target.display);
+        backgroundDecorator = new BackgroundDecorator(graphics);
+        paddingDecorator = new PaddingDecorator(display);
     }
 
     /**
@@ -48,14 +59,24 @@ public class BoxModelRenderer {
             backgroundImageBitmap.scale9Grid = backgroundScale9Grid;
         }
 
-        target.display.dispatchEvent(new Event(SAMPLE_BG));
-        //invalidate();
+        display.dispatchEvent(new Event(SAMPLE_BG));
+        
     }
 
     /**
      *
      *
      */
+    protected function drawBackground():void
+    {
+        backgroundDecorator.offsetX = borderDecorator.left;
+        backgroundDecorator.offsetY = borderDecorator.top;
+        backgroundDecorator.width = paddingDecorator.width;
+        backgroundDecorator.height = paddingDecorator.height;
+
+        backgroundDecorator.draw();
+    }
+
     public function drawBoxModel():void
     {
 
@@ -67,13 +88,9 @@ public class BoxModelRenderer {
         graphics.clear();
 
         // Create Border
-        if (hasBorder) drawBorder();
-        if (!isNaN(backgroundColor)) drawBackgroundColor();
-
-        drawBackgroundImage();
-
-        graphics.endFill();
-
+        drawBorder();
+        drawBackground();
+        
         alignDisplay();
 
     }
@@ -92,136 +109,8 @@ public class BoxModelRenderer {
      */
     protected function drawBorder():void
     {
-        /*graphics.beginFill(borderColor, borderAlpha);
-        graphics.drawRect(borderRectX, borderRectY, borderRectWidth, borderRectHeight);
-        graphics.drawRect(borderLeft, borderTop, paddingRectWidth, paddingRectHeight);*/
-        //trace( borderLeft, borderTop, _paddingRectangle.width, _paddingRectangle.height );
-
         borderDecorator.draw();
     }
-
-    /**
-     *
-     */
-    protected function drawBackgroundImage():void
-    {
-        //
-        if (backgroundImageBitmap)
-        {
-            var bgiFullW:Number = paddingLeft + displayWidth + paddingRight;
-            var bgiFullH:Number = paddingTop + displayHeight + paddingBottom;
-
-            var bgiW:Number = backgroundImageBitmap.width;
-            var bgiH:Number = backgroundImageBitmap.height;
-
-            var bgX:Number = paddingDecorator.paddingOffsetX;
-            var bgY:Number = paddingDecorator.paddingOffsetY;
-
-            var m:Matrix = new Matrix();
-
-            var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
-
-            switch (backgroundRepeat)
-            {
-                case BgRepeatProps.NO_REPEAT:
-                    bgX = backgroundPositionX + borderLeft;
-                    bgY = backgroundPositionY + borderTop;
-                    m.translate(bgX, bgY);
-                    break;
-                case BgRepeatProps.REPEAT_X:
-                    bgiW = bgiFullW;
-                    m.translate(borderLeft, borderTop);
-                    break;
-                case BgRepeatProps.REPEAT_Y:
-                    bgiH = bgiFullH;
-                    m.translate(borderLeft, borderTop);
-                    break;
-                default:
-                    bgiW = bgiFullW;
-                    bgiH = bgiFullH;
-                    m.translate(borderLeft, borderTop);
-                    break;
-            }
-
-            bmd.draw(backgroundImageBitmap, null, new ColorTransform(1, 1, 1, backgroundImageAlpha));
-
-            graphics.beginBitmapFill(bmd, m, true, false);
-            graphics.drawRect(bgX, bgY, bgiW, bgiH);
-            graphics.endFill();
-        }
-    }
-
-    /**
-     *
-     *
-     */
-    protected function drawBackgroundColor():void
-    {
-        var tempColor:uint = debugPadding ? debugPaddingColor : backgroundColor;
-
-        backgroundColorAlpha = isNaN(backgroundColorAlpha) ? 1 : backgroundColorAlpha;
-
-        graphics.beginFill(tempColor, backgroundColorAlpha);
-        graphics.drawRect(paddingDecorator.paddingOffsetX, paddingDecorator.paddingOffsetY, paddingDecorator.width, paddingDecorator.height);
-        graphics.endFill();
-
-        if (debugPadding)
-        {
-            graphics.beginFill(backgroundColor, backgroundColorAlpha);
-            graphics.drawRect(paddingLeft + borderLeft, paddingTop + borderTop, displayWidth, displayHeight);
-            graphics.endFill();
-        }
-    }
-
-    private function onRender(event:Event):void {
-        drawBoxModel();
-    }
-    
-    
-    protected var DELIMITER:String = " ";
-
-    protected var _backgroundImageBitmap:Bitmap;
-    //protected var _paddingRectangle:Rectangle = new Rectangle();
-    //protected var _borderRectangle:Rectangle = new Rectangle();
-    protected var _backgroundColor:Number;
-    //protected var _borderColor:Number;
-    protected var _backgroundScale9Grid:Rectangle;
-    protected var _backgroundRepeat:String;
-    protected var _backgroundColorAlpha:Number;
-    //protected var _paddingTop:Number = 0;
-    //protected var _paddingRight:Number = 0;
-    //protected var _paddingBottom:Number = 0;
-    //protected var _paddingLeft:Number = 0;
-    protected var _marginTop:Number = 0;
-    protected var _marginRight:Number = 0;
-    protected var _marginBottom:Number = 0;
-    protected var _marginLeft:Number = 0;
-    //protected var _borderTop:Number = 0;
-//    protected var _borderRight:Number = 0;
-//    protected var _borderBottom:Number = 0;
-//    protected var _borderLeft:Number = 0;
-//    protected var _borderProperties:String;
-//    protected var _borderAlpha:Number = 1;
-    protected var _backgroundPositionX:Number = 0;
-    protected var _backgroundPositionY:Number = 0;
-    protected var _debugPadding:Boolean = false;
-    protected var _debugPaddingColor:uint = 0xFFFF00;
-    protected var _backgroundImageAlpha:Number = 1;
-    protected var _width:Number = 0;
-    protected var _height:Number = 0;
-
-    //--------------------------------------------------------------------------------
-    //
-    // Constructor
-    //
-    //--------------------------------------------------------------------------------
-
-
-    //--------------------------------------------------------------------------------
-    //
-    // Public Getters and Setters
-    //
-    //--------------------------------------------------------------------------------
 
     /**
      * The fill color of the background
@@ -229,7 +118,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundColor():uint
     {
-        return _backgroundColor;
+        return backgroundDecorator.backgroundColor;
     }
 
     /**
@@ -237,7 +126,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundColor(value:uint):void
     {
-        _backgroundColor = value;
+        backgroundDecorator.backgroundColor = value;
 
     }
 
@@ -286,11 +175,7 @@ public class BoxModelRenderer {
      */
     public function set padding(values:Array):void
     {
-        values = validateOffset(values);
-        paddingTop = values[0];
-        paddingRight = values[1];
-        paddingBottom = values[2];
-        paddingLeft = values[3];
+        paddingDecorator.boxValues = values;
 
     }
 
@@ -308,13 +193,14 @@ public class BoxModelRenderer {
      */
     public function set margin(values:Array):void
     {
-        values = validateOffset(values);
 
+        //TODO this will be fixed once we have a margin decorator
+        /*values = validateOffset(values);
         marginTop = values[0];
         marginRight = values[1];
         marginBottom = values[2];
         marginLeft = values[3];
-
+        */
 
     }
 
@@ -354,7 +240,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundScale9Grid():Rectangle
     {
-        return _backgroundScale9Grid;
+        return backgroundDecorator.backgroundScale9Grid;
     }
 
     /**
@@ -362,7 +248,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
     {
-        _backgroundScale9Grid = backgroundScale9Grid;
+        backgroundDecorator.backgroundScale9Grid = backgroundScale9Grid;
 
     }
 
@@ -372,7 +258,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundRepeat():String
     {
-        return _backgroundRepeat;
+        return backgroundDecorator.backgroundRepeat;
     }
 
     /**
@@ -380,7 +266,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundRepeat(backgroundRepeat:String):void
     {
-        _backgroundRepeat = backgroundRepeat;
+        backgroundDecorator.backgroundRepeat = backgroundRepeat;
 
     }
 
@@ -390,7 +276,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundColorAlpha():Number
     {
-        return _backgroundColorAlpha;
+        return backgroundDecorator.backgroundColorAlpha;
     }
 
     /**
@@ -398,7 +284,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
     {
-        _backgroundColorAlpha = backgroundColorAlpha;
+        backgroundDecorator.backgroundColorAlpha = backgroundColorAlpha;
 
     }
 
@@ -642,7 +528,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundPositionX():Number
     {
-        return _backgroundPositionX;
+        return backgroundDecorator.backgroundPositionX;
     }
 
     /**
@@ -650,7 +536,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundPositionX(backgroundPositionX:Number):void
     {
-        _backgroundPositionX = backgroundPositionX;
+        backgroundDecorator.backgroundPositionX = backgroundPositionX;
 
     }
 
@@ -660,7 +546,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundPositionY():Number
     {
-        return _backgroundPositionY;
+        return backgroundDecorator.backgroundPositionY;
     }
 
     /**
@@ -668,7 +554,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundPositionY(backgroundPositionY:Number):void
     {
-        _backgroundPositionY = backgroundPositionY;
+        backgroundDecorator.backgroundPositionY = backgroundPositionY;
 
     }
 
@@ -714,7 +600,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundImageBitmap():Bitmap
     {
-        return _backgroundImageBitmap;
+        return backgroundDecorator.backgroundImageBitmap;
     }
 
     /**
@@ -722,7 +608,8 @@ public class BoxModelRenderer {
      */
     public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
     {
-        _backgroundImageBitmap = backgroundImageBitmap;
+        backgroundDecorator.backgroundImageBitmap = backgroundImageBitmap;
+
 
     }
 
@@ -732,7 +619,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundImageAlpha():Number
     {
-        return _backgroundImageAlpha;
+        return backgroundDecorator.backgroundImageAlpha;
     }
 
     /**
@@ -740,7 +627,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
     {
-        _backgroundImageAlpha = backgroundImageAlpha;
+        backgroundDecorator.backgroundImageAlpha = backgroundImageAlpha;
 
     }
 
@@ -790,8 +677,8 @@ public class BoxModelRenderer {
 
     public function clearBackgroundImage():void
     {
-        _backgroundImageBitmap = null;
-        _backgroundColor = NaN;
+        backgroundDecorator.backgroundImageBitmap = null;
+        backgroundDecorator.backgroundColor = NaN;
     }
 
     /**
@@ -810,53 +697,6 @@ public class BoxModelRenderer {
     //
     //--------------------------------------------------------------------------------
 
-
-    /**
-     * <p>Takes a string of numbers and returns a 4 position array that can
-     * be used for padding or margin offsets. Offsets arrays contain 4 slots
-     * Top, Right, Bottom, Left. Accepts 3 variations:</p>
-     *
-     * <p>1) Single number, pads all 4 slots with the value</p>
-     *
-     * <p>2) Two numbers, pads the top and bottom with the first value, and
-     * the left and right with the second number</p>
-     *
-     * <p>3) 4 number, is a 1 to 1 translations and maps all values to
-     * respective slots.</p>
-     *
-     * @return Array
-     */
-    protected function validateOffset(values:Array):Array
-    {
-
-        var total:Number = values.length;
-        var offset:Array;
-
-        if (total == 1)
-        {
-            var baseValue:Number = values[0];
-            offset = [ baseValue, baseValue, baseValue, baseValue ];
-        }
-        else if (total == 2)
-        {
-            var tbValue:Number = values[0];
-            var lrValue:Number = values[1];
-
-            offset = [ tbValue, lrValue, tbValue, lrValue ];
-        }
-        else
-        {
-            for (var i:Number = 0; i < 4; i++)
-            {
-                if (!values[i]) values[i] = 0;
-            }
-
-            offset = [ values[0], values[1], values[2], values[3] ];
-        }
-
-        return offset;
-    }
-    
     //
 
     public function get width():Number

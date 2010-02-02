@@ -108,11 +108,14 @@ public class BorderDecorator extends AbstractBoxDecorator implements IDisplay, I
     
     public function draw():void
     {
+        if (hasBorder)
+        {
         graphics.beginFill(_borderColor, _borderAlpha);
         graphics.drawRect(_borderRect.x, _borderRect.y, _borderRect.width, _borderRect.height);
         //TODO this could be optimized by pre-calculating when setting the width and height
         graphics.drawRect(_borderRect.x + left, _borderRect.y + top, _borderRect.width - (left + right), _borderRect.height - (top + bottom));
         graphics.endFill();
+        }
     }
     
 }
