@@ -4,7 +4,6 @@ import com.flashartofwar.fboxmodel.decorators.BorderDecorator;
 import com.flashartofwar.fboxmodel.decorators.PaddingDecorator;
 
 import flash.display.Bitmap;
-import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.Graphics;
 import flash.events.Event;

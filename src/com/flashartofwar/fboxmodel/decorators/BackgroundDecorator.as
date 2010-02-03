@@ -11,14 +11,14 @@ import flash.geom.Rectangle;
 public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
 
     protected var _backgroundImageBitmap:Bitmap;
-    protected var _backgroundColorAlpha:Number;
+    protected var _backgroundColorAlpha:Number = 1;
     protected var _backgroundScale9Grid:Rectangle;
     protected var _backgroundRepeat:String;
     protected var _offsetX:Number;
     protected var _offsetY:Number;
     protected var _backgroundPositionY:Number;
     protected var _backgroundPositionX:Number;
-    protected var _backgroundImageAlpha:Number;
+    protected var _backgroundImageAlpha:Number = 1;
     protected var _backgroundColor:uint;
     protected var _width:Number;
     protected var _height:Number;
@@ -33,7 +33,7 @@ public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
     }
 
     public function set backgroundImageBitmap(value:Bitmap):void {
-        backgroundImageBitmap = value;
+        _backgroundImageBitmap = value;
     }
 
     public function get backgroundColorAlpha():Number {
