@@ -8,164 +8,87 @@ import flash.geom.ColorTransform;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
-public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
+public class BackgroundImageDecorator extends AbstractBackgroundDecorator implements IBackgroundDecorator, IBackgroundImageDecorator{
 
     protected var _backgroundImageBitmap:Bitmap;
-    protected var _backgroundColorAlpha:Number = 1;
     protected var _backgroundScale9Grid:Rectangle;
     protected var _backgroundRepeat:String;
-    protected var _offsetX:Number;
-    protected var _offsetY:Number;
     protected var _backgroundPositionY:Number;
     protected var _backgroundPositionX:Number;
-    protected var _backgroundImageAlpha:Number = 1;
-    protected var _backgroundColor:uint;
-    protected var _width:Number;
-    protected var _height:Number;
-    protected var _graphics:Graphics;
 
-    public function BackgroundDecorator(graphics:Graphics) {
-        this.graphics = graphics
+    public function BackgroundImageDecorator(graphics:Graphics) {
+        super(graphics);
     }
 
-    public function get backgroundImageBitmap():Bitmap {
+    public function get imageBitmap():Bitmap {
         return _backgroundImageBitmap;
     }
 
-    public function set backgroundImageBitmap(value:Bitmap):void {
+    public function set imageBitmap(value:Bitmap):void {
         _backgroundImageBitmap = value;
     }
 
-    public function get backgroundColorAlpha():Number {
-        return _backgroundColorAlpha;
-    }
-
-    public function set backgroundColorAlpha(value:Number):void {
-        _backgroundColorAlpha = value;
-    }
-
-    public function get backgroundScale9Grid():Rectangle {
+    public function get scale9Grid():Rectangle {
         return _backgroundScale9Grid;
     }
     
-    public function set backgroundScale9Grid(value:Rectangle):void {
+    public function set scale9Grid(value:Rectangle):void {
         _backgroundScale9Grid = value;
     }
 
-    public function get width():Number {
-        return _width;
-    }
-
-    public function set width(value:Number):void {
-        _width = value;
-    }
-
-    public function get height():Number {
-        return _height;
-    }
-
-    public function set height(value:Number):void {
-        _height = value;
-    }
-
-    public function get backgroundRepeat():String {
+    public function get repeat():String {
         return _backgroundRepeat;
     }
 
-    public function set backgroundRepeat(value:String):void {
+    public function set repeat(value:String):void {
         _backgroundRepeat = value; 
     }
 
-    public function get offsetX():Number {
-        return _offsetX;
-    }
-
-    public function set offsetX(value:Number):void {
-        _offsetX = value;
-    }
-
-    public function get offsetY():Number {
-        return _offsetY;
-    }
-
-    public function set offsetY(value:Number):void {
-        _offsetY = value;
-    }
-
-    public function get backgroundPositionY():Number {
+    public function get imagePositionY():Number {
         return _backgroundPositionY;
     }
 
-    public function set backgroundPositionY(value:Number):void {
+    public function set imagePositionY(value:Number):void {
         _backgroundPositionY = value;
     }
 
-    public function get backgroundPositionX():Number {
+    public function get imagePositionX():Number {
         return _backgroundPositionX;
     }
 
-    public function set backgroundPositionX(value:Number):void {
+    public function set imagePositionX(value:Number):void {
         _backgroundPositionX = value;
     }
 
-    public function get backgroundImageAlpha():Number {
-        return _backgroundImageAlpha;
-    }
-
-    public function set backgroundImageAlpha(value:Number):void {
-        _backgroundImageAlpha = value;
-    }
-
-    public function get backgroundColor():uint {
-        return _backgroundColor;
-    }
-
-    public function set backgroundColor(value:uint):void {
-        _backgroundColor = value;
-    }
-
-    public function get useBackgroundColor():Boolean {
-        return !isNaN(backgroundColor);
-    }
-
-    protected function set graphics(value:Graphics):void
-    {
-        _graphics = value;
-    }
-
-    protected function get graphics():Graphics
-    {
-        return _graphics;
-    }
     /**
      *
      */
     protected function drawBackgroundImage():void
     {
         //
-        if (backgroundImageBitmap)
+        if (imageBitmap)
         {
             var bgiFullW:Number = width;
             var bgiFullH:Number = height;
 
-            if (backgroundScale9Grid)
+            if (scale9Grid)
             {
-                backgroundImageBitmap = new ScaleBitmap(backgroundImageBitmap.bitmapData);
-                backgroundImageBitmap.scale9Grid = backgroundScale9Grid;
-                (backgroundImageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
+                imageBitmap = new ScaleBitmap(imageBitmap.bitmapData);
+                imageBitmap.scale9Grid = scale9Grid;
+                (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
             }
 
-            var bgiW:Number = backgroundImageBitmap.width;
-            var bgiH:Number = backgroundImageBitmap.height;
+            var bgiW:Number = imageBitmap.width;
+            var bgiH:Number = imageBitmap.height;
 
             var m:Matrix = new Matrix();
 
             var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
 
-            switch (backgroundRepeat)
+            switch (repeat)
             {
                 case BgRepeatProps.NO_REPEAT:
-                    m.translate(offsetX + backgroundPositionX, offsetY + backgroundPositionY);
+                    m.translate(offsetX + imagePositionX, offsetY + imagePositionY);
                     break;
                 case BgRepeatProps.REPEAT_X:
                     bgiW = bgiFullW;
@@ -183,7 +106,7 @@ public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
                     break;
             }
 
-            bmd.draw(backgroundImageBitmap, null, new ColorTransform(1, 1, 1, backgroundImageAlpha));
+            bmd.draw(imageBitmap, null, new ColorTransform(1, 1, 1, alpha));
 
             graphics.beginBitmapFill(bmd, m, true, false);
             graphics.drawRect(offsetX, offsetY, bgiW, bgiH);
@@ -196,34 +119,10 @@ public class BackgroundDecorator implements IDisplay,IBoxModelBackground{
      *
      *
      */
-    protected function drawBackgroundColor():void
+    override public function draw():void
     {
-
-        backgroundColorAlpha = isNaN(backgroundColorAlpha) ? 1 : backgroundColorAlpha;
-
-        graphics.beginFill(backgroundColor, backgroundColorAlpha);
-        graphics.drawRect(offsetX, offsetY, width, height);
-        graphics.endFill();
-
-    }
-
-    /**
-     *
-     *
-     */
-    public function draw():void
-    {
-        // Start drawing
-
-        //graphics.clear();
-
-        if (useBackgroundColor) drawBackgroundColor();
-
         drawBackgroundImage();
-
-        graphics.endFill();
     }
-
 
 
 }

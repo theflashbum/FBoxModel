@@ -1,5 +1,5 @@
 package com.flashartofwar.fboxmodel.decorators {
-public interface IRenderer {
+public interface IDecorator {
     function draw():void;
 }
 }

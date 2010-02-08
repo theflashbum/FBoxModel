@@ -2,7 +2,7 @@ package com.flashartofwar.fboxmodel.decorators {
 import flash.display.DisplayObject;
 import flash.geom.Rectangle;
 
-public class PaddingDecorator extends AbstractBoxDecorator implements IDisplay {
+public class PaddingDecorator extends AbstractBoxDecorator {
 
 
     private var _height:Number = 0;

@@ -1,5 +1,6 @@
 package com.flashartofwar.fboxmodel.renderer {
-import com.flashartofwar.fboxmodel.decorators.BackgroundDecorator;
+import com.flashartofwar.fboxmodel.decorators.BackgroundColorDecorator;
+import com.flashartofwar.fboxmodel.decorators.BackgroundImageDecorator;
 import com.flashartofwar.fboxmodel.decorators.BorderDecorator;
 import com.flashartofwar.fboxmodel.decorators.PaddingDecorator;
 
@@ -17,7 +18,8 @@ public class BoxModelRenderer {
     protected var display:DisplayObjectContainer;
     protected var borderDecorator:BorderDecorator;
     protected var paddingDecorator:PaddingDecorator;
-    protected var backgroundDecorator:BackgroundDecorator;
+    protected var backgroundColorDecorator:BackgroundColorDecorator;
+    protected var backgroundImageDecorator:BackgroundImageDecorator;
     protected var DELIMITER:String = " ";
     protected var _marginTop:Number = 0;
     protected var _marginRight:Number = 0;
@@ -39,9 +41,12 @@ public class BoxModelRenderer {
      private function createBoxModelDecorators(graphics:Graphics, display:DisplayObjectContainer):void
     {
         borderDecorator = new BorderDecorator(graphics);
-        backgroundDecorator = new BackgroundDecorator(graphics);
+        backgroundColorDecorator = new BackgroundColorDecorator(graphics);
+        backgroundImageDecorator = new BackgroundImageDecorator(graphics);
         paddingDecorator = new PaddingDecorator(display);
     }
+
+
 
     /**
      *
@@ -68,12 +73,19 @@ public class BoxModelRenderer {
      */
     protected function drawBackground():void
     {
-        backgroundDecorator.offsetX = borderDecorator.left;
-        backgroundDecorator.offsetY = borderDecorator.top;
-        backgroundDecorator.width = paddingDecorator.width;
-        backgroundDecorator.height = paddingDecorator.height;
+        backgroundColorDecorator.offsetX = borderDecorator.left;
+        backgroundColorDecorator.offsetY = borderDecorator.top;
+        backgroundColorDecorator.width = paddingDecorator.width;
+        backgroundColorDecorator.height = paddingDecorator.height;
 
-        backgroundDecorator.draw();
+        backgroundColorDecorator.draw();
+
+        backgroundImageDecorator.offsetX = borderDecorator.left;
+        backgroundImageDecorator.offsetY = borderDecorator.top;
+        backgroundImageDecorator.width = paddingDecorator.width;
+        backgroundImageDecorator.height = paddingDecorator.height;
+
+        backgroundImageDecorator.draw();
     }
 
     public function drawBoxModel():void
@@ -117,7 +129,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundColor():uint
     {
-        return backgroundDecorator.backgroundColor;
+        return backgroundColorDecorator.color;
     }
 
     /**
@@ -125,7 +137,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundColor(value:uint):void
     {
-        backgroundDecorator.backgroundColor = value;
+        backgroundColorDecorator.color = value;
 
     }
 
@@ -239,7 +251,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundScale9Grid():Rectangle
     {
-        return backgroundDecorator.backgroundScale9Grid;
+        return backgroundImageDecorator.scale9Grid;
     }
 
     /**
@@ -247,7 +259,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
     {
-        backgroundDecorator.backgroundScale9Grid = backgroundScale9Grid;
+        backgroundImageDecorator.scale9Grid = backgroundScale9Grid;
 
     }
 
@@ -257,7 +269,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundRepeat():String
     {
-        return backgroundDecorator.backgroundRepeat;
+        return backgroundImageDecorator.repeat;
     }
 
     /**
@@ -265,7 +277,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundRepeat(backgroundRepeat:String):void
     {
-        backgroundDecorator.backgroundRepeat = backgroundRepeat;
+        backgroundImageDecorator.repeat = backgroundRepeat;
 
     }
 
@@ -275,7 +287,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundColorAlpha():Number
     {
-        return backgroundDecorator.backgroundColorAlpha;
+        return backgroundColorDecorator.alpha;
     }
 
     /**
@@ -283,7 +295,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
     {
-        backgroundDecorator.backgroundColorAlpha = backgroundColorAlpha;
+        backgroundColorDecorator.alpha = backgroundColorAlpha;
 
     }
 
@@ -527,7 +539,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundPositionX():Number
     {
-        return backgroundDecorator.backgroundPositionX;
+        return backgroundImageDecorator.imagePositionX;
     }
 
     /**
@@ -535,7 +547,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundPositionX(backgroundPositionX:Number):void
     {
-        backgroundDecorator.backgroundPositionX = backgroundPositionX;
+        backgroundImageDecorator.imagePositionX = backgroundPositionX;
 
     }
 
@@ -545,7 +557,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundPositionY():Number
     {
-        return backgroundDecorator.backgroundPositionY;
+        return backgroundImageDecorator.imagePositionY;
     }
 
     /**
@@ -553,7 +565,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundPositionY(backgroundPositionY:Number):void
     {
-        backgroundDecorator.backgroundPositionY = backgroundPositionY;
+        backgroundImageDecorator.imagePositionY = backgroundPositionY;
 
     }
 
@@ -599,7 +611,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundImageBitmap():Bitmap
     {
-        return backgroundDecorator.backgroundImageBitmap;
+        return backgroundImageDecorator.imageBitmap;
     }
 
     /**
@@ -607,7 +619,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
     {
-        backgroundDecorator.backgroundImageBitmap = backgroundImageBitmap;
+        backgroundImageDecorator.imageBitmap = backgroundImageBitmap;
 
 
     }
@@ -618,7 +630,7 @@ public class BoxModelRenderer {
      */
     public function get backgroundImageAlpha():Number
     {
-        return backgroundDecorator.backgroundImageAlpha;
+        return backgroundImageDecorator.alpha;
     }
 
     /**
@@ -626,7 +638,7 @@ public class BoxModelRenderer {
      */
     public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
     {
-        backgroundDecorator.backgroundImageAlpha = backgroundImageAlpha;
+        backgroundImageDecorator.alpha = backgroundImageAlpha;
 
     }
 
@@ -676,8 +688,8 @@ public class BoxModelRenderer {
 
     public function clearBackgroundImage():void
     {
-        backgroundDecorator.backgroundImageBitmap = null;
-        backgroundDecorator.backgroundColor = NaN;
+        backgroundImageDecorator.imageBitmap = null;
+        backgroundColorDecorator.color = NaN;
     }
 
     /**
