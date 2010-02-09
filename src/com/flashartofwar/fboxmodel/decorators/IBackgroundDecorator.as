@@ -1,18 +1,19 @@
 package com.flashartofwar.fboxmodel.decorators
 {
-public interface IBackgroundDecorator {
+    public interface IBackgroundDecorator
+    {
 
-    function get alpha():Number;
+        function get alpha():Number;
 
-    function set alpha(value:Number):void;
+        function set alpha(value:Number):void;
 
-    function get width():Number;
+        function get width():Number;
 
-    function set width(value:Number):void;
+        function set width(value:Number):void;
 
-    function get height():Number;
+        function get height():Number;
 
-    function set height(value:Number):void;
+        function set height(value:Number):void;
 
-}
+    }
 }

@@ -1,23 +1,23 @@
 package com.flashartofwar.fboxmodel.decorators
 {
-public interface IBox
-{
+    public interface IBox
+    {
 
-    function get top():Number;
+        function get top():Number;
 
-    function set top(value:Number):void;
+        function set top(value:Number):void;
 
-    function get right():Number;
+        function get right():Number;
 
-    function set right(value:Number):void;
+        function set right(value:Number):void;
 
-    function get bottom():Number;
+        function get bottom():Number;
 
-    function set bottom(value:Number):void;
+        function set bottom(value:Number):void;
 
-    function get left():Number;
+        function get left():Number;
 
-    function set left(value:Number):void;
+        function set left(value:Number):void;
 
-}
+    }
 }

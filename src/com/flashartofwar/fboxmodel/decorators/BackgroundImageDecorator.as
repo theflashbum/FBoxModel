@@ -1,131 +1,153 @@
-package com.flashartofwar.fboxmodel.decorators{
-import com.flashartofwar.fboxmodel.enum.BgRepeatProps;
+package com.flashartofwar.fboxmodel.decorators
+{
+    import flash.display.Bitmap;
+    import flash.display.BitmapData;
+    import flash.display.Graphics;
+    import flash.geom.ColorTransform;
+    import flash.geom.Matrix;
+    import flash.geom.Rectangle;
 
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.Graphics;
-import flash.geom.ColorTransform;
-import flash.geom.Matrix;
-import flash.geom.Rectangle;
-
-public class BackgroundImageDecorator extends AbstractBackgroundDecorator implements IBackgroundDecorator, IBackgroundImageDecorator{
-
-    protected var _backgroundImageBitmap:Bitmap;
-    protected var _backgroundScale9Grid:Rectangle;
-    protected var _backgroundRepeat:String;
-    protected var _backgroundPositionY:Number;
-    protected var _backgroundPositionX:Number;
-
-    public function BackgroundImageDecorator(graphics:Graphics) {
-        super(graphics);
-    }
-
-    public function get imageBitmap():Bitmap {
-        return _backgroundImageBitmap;
-    }
-
-    public function set imageBitmap(value:Bitmap):void {
-        _backgroundImageBitmap = value;
-    }
-
-    public function get scale9Grid():Rectangle {
-        return _backgroundScale9Grid;
-    }
-    
-    public function set scale9Grid(value:Rectangle):void {
-        _backgroundScale9Grid = value;
-    }
-
-    public function get repeat():String {
-        return _backgroundRepeat;
-    }
-
-    public function set repeat(value:String):void {
-        _backgroundRepeat = value; 
-    }
-
-    public function get imagePositionY():Number {
-        return _backgroundPositionY;
-    }
-
-    public function set imagePositionY(value:Number):void {
-        _backgroundPositionY = value;
-    }
-
-    public function get imagePositionX():Number {
-        return _backgroundPositionX;
-    }
-
-    public function set imagePositionX(value:Number):void {
-        _backgroundPositionX = value;
-    }
-
-    /**
-     *
-     */
-    protected function drawBackgroundImage():void
+    public class BackgroundImageDecorator extends AbstractBackgroundDecorator implements IBackgroundDecorator, IBackgroundImageDecorator
     {
-        //
-        if (imageBitmap)
+
+        public static const NO_REPEAT:String = "no-repeat";
+        public static const REPEAT_X:String = "repeat-x";
+        public static const REPEAT_Y:String = "repeat-y";
+        public static const REPEAT:String = "repeat";
+
+        protected var _imageBitmap:Bitmap;
+        protected var _scale9Grid:Rectangle;
+        protected var _repeat:String;
+        protected var _positionY:Number;
+        protected var _positionX:Number;
+
+        public function BackgroundImageDecorator(graphics:Graphics)
         {
-            var bgiFullW:Number = width;
-            var bgiFullH:Number = height;
-
-            if (scale9Grid)
-            {
-                imageBitmap = new ScaleBitmap(imageBitmap.bitmapData);
-                imageBitmap.scale9Grid = scale9Grid;
-                (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
-            }
-
-            var bgiW:Number = imageBitmap.width;
-            var bgiH:Number = imageBitmap.height;
-
-            var m:Matrix = new Matrix();
-
-            var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
-
-            switch (repeat)
-            {
-                case BgRepeatProps.NO_REPEAT:
-                    m.translate(offsetX + imagePositionX, offsetY + imagePositionY);
-                    break;
-                case BgRepeatProps.REPEAT_X:
-                    bgiW = bgiFullW;
-                    m.translate(offsetX, offsetY);
-                    break;
-                case BgRepeatProps.REPEAT_Y:
-                    bgiH = bgiFullH;
-                    m.translate(offsetX, offsetY);
-                    break;
-
-                default:
-                    bgiW = bgiFullW;
-                    bgiH = bgiFullH;
-                    m.translate(offsetX, offsetY);
-                    break;
-            }
-
-            bmd.draw(imageBitmap, null, new ColorTransform(1, 1, 1, alpha));
-
-            graphics.beginBitmapFill(bmd, m, true, false);
-            graphics.drawRect(offsetX, offsetY, bgiW, bgiH);
-            graphics.endFill();
+            super(graphics);
         }
 
+        public function get imageBitmap():Bitmap
+        {
+            return _imageBitmap;
+        }
+
+        public function set imageBitmap(value:Bitmap):void
+        {
+            _imageBitmap = value;
+        }
+
+        public function get scale9Grid():Rectangle
+        {
+            return _scale9Grid;
+        }
+
+        public function set scale9Grid(value:Rectangle):void
+        {
+            _scale9Grid = value;
+        }
+
+        public function get repeat():String
+        {
+            return _repeat;
+        }
+
+        public function set repeat(value:String):void
+        {
+            _repeat = value;
+        }
+
+        public function get imagePositionY():Number
+        {
+            return _positionY;
+        }
+
+        public function set imagePositionY(value:Number):void
+        {
+            _positionY = value;
+        }
+
+        public function get imagePositionX():Number
+        {
+            return _positionX;
+        }
+
+        public function set imagePositionX(value:Number):void
+        {
+            _positionX = value;
+        }
+
+        /**
+         *
+         */
+        protected function drawBackgroundImage():void
+        {
+            //
+            if (imageBitmap)
+            {
+                var bgiFullW:Number = width;
+                var bgiFullH:Number = height;
+
+                var bgOffsetX:Number = offsetX;
+                var bgOffsetY:Number = offsetY;
+
+                if (scale9Grid)
+                {
+                    imageBitmap = new ScaleBitmap(imageBitmap.bitmapData);
+                    imageBitmap.scale9Grid = scale9Grid;
+                    (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
+                }
+
+                var bgiW:Number = imageBitmap.width;
+                var bgiH:Number = imageBitmap.height;
+
+                var m:Matrix = new Matrix();
+
+                var bmd:BitmapData = new BitmapData(bgiW, bgiH, true, 0x00FFFFFF);
+
+                switch (repeat)
+                {
+                    case NO_REPEAT:
+
+                        bgOffsetX += imagePositionX;
+                        bgOffsetY += imagePositionY;
+                        m.translate(bgOffsetX, bgOffsetY);
+                        break;
+                    case REPEAT_X:
+                        bgiW = bgiFullW;
+                        m.translate(bgOffsetX, bgOffsetY);
+                        break;
+                    case REPEAT_Y:
+                        bgiH = bgiFullH;
+                        m.translate(bgOffsetX, bgOffsetY);
+                        break;
+
+                    default:
+                        bgiW = bgiFullW;
+                        bgiH = bgiFullH;
+                        m.translate(bgOffsetX, bgOffsetY);
+                        break;
+                }
+
+                bmd.draw(imageBitmap, null, new ColorTransform(1, 1, 1, alpha));
+
+                graphics.beginBitmapFill(bmd, m, true, false);
+                graphics.drawRect(bgOffsetX, bgOffsetY, bgiW, bgiH);
+                graphics.endFill();
+            }
+
+        }
+
+        /**
+         *
+         *
+         */
+        override public function draw():void
+        {
+            drawBackgroundImage();
+        }
+
+
     }
-
-    /**
-     *
-     *
-     */
-    override public function draw():void
-    {
-        drawBackgroundImage();
-    }
-
-
-}
 }
 /**
  *
@@ -149,7 +171,8 @@ import flash.display.BitmapData;
 import flash.geom.Matrix;
 import flash.geom.Rectangle;
 
-internal class ScaleBitmap extends Bitmap {
+internal class ScaleBitmap extends Bitmap
+{
 
     // ------------------------------------------------
     //
@@ -167,7 +190,8 @@ internal class ScaleBitmap extends Bitmap {
     // ------------------------------------------------
 
 
-    function ScaleBitmap(bmpData:BitmapData = null, pixelSnapping:String = "auto", smoothing:Boolean = false) {
+    function ScaleBitmap(bmpData:BitmapData = null, pixelSnapping:String = "auto", smoothing:Boolean = false)
+    {
 
         // super constructor
         super(bmpData, pixelSnapping, smoothing);
@@ -185,15 +209,19 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * setter bitmapData
      */
-    override public function set bitmapData(bmpData:BitmapData):void {
+    override public function set bitmapData(bmpData:BitmapData):void
+    {
         _originalBitmap = bmpData.clone();
-        if (_scale9Grid != null) {
-            if (!validGrid(_scale9Grid)) {
+        if (_scale9Grid != null)
+        {
+            if (!validGrid(_scale9Grid))
+            {
                 _scale9Grid = null;
             }
             setSize(bmpData.width, bmpData.height);
         }
-        else {
+        else
+        {
             assignBitmapData(_originalBitmap.clone());
         }
     }
@@ -201,8 +229,10 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * setter width
      */
-    override public function set width(w:Number):void {
-        if (w != width) {
+    override public function set width(w:Number):void
+    {
+        if (w != width)
+        {
             setSize(w, height);
         }
     }
@@ -210,8 +240,10 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * setter height
      */
-    override public function set height(h:Number):void {
-        if (h != height) {
+    override public function set height(h:Number):void
+    {
+        if (h != height)
+        {
             setSize(width, h);
         }
     }
@@ -219,10 +251,13 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * set scale9Grid
      */
-    override public function set scale9Grid(r:Rectangle):void {
+    override public function set scale9Grid(r:Rectangle):void
+    {
         // Check if the given grid is different from the current one
-        if ((_scale9Grid == null && r != null) || (_scale9Grid != null && !_scale9Grid.equals(r))) {
-            if (r == null) {
+        if ((_scale9Grid == null && r != null) || (_scale9Grid != null && !_scale9Grid.equals(r)))
+        {
+            if (r == null)
+            {
                 // If deleting scalee9Grid, restore the original bitmap
                 // then resize it (streched) to the previously set dimensions
                 var currentWidth:Number = width;
@@ -231,8 +266,10 @@ internal class ScaleBitmap extends Bitmap {
                 assignBitmapData(_originalBitmap.clone());
                 setSize(currentWidth, currentHeight);
             }
-            else {
-                if (!validGrid(r)) {
+            else
+            {
+                if (!validGrid(r))
+                {
                     throw (new Error("#001 - The _scale9Grid does not match the original BitmapData"));
                     return;
                 }
@@ -249,19 +286,22 @@ internal class ScaleBitmap extends Bitmap {
      * assignBitmapData
      * Update the effective bitmapData
      */
-    protected function assignBitmapData(bmp:BitmapData):void {
+    protected function assignBitmapData(bmp:BitmapData):void
+    {
         super.bitmapData.dispose();
         super.bitmapData = bmp;
     }
 
-    protected function validGrid(r:Rectangle):Boolean {
+    protected function validGrid(r:Rectangle):Boolean
+    {
         return r.right <= _originalBitmap.width && r.bottom <= _originalBitmap.height;
     }
 
     /**
      * get scale9Grid
      */
-    override public function get scale9Grid():Rectangle {
+    override public function get scale9Grid():Rectangle
+    {
         return _scale9Grid;
     }
 
@@ -269,12 +309,15 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * setSize
      */
-    public function setSize(w:Number, h:Number):void {
-        if (_scale9Grid == null) {
+    public function setSize(w:Number, h:Number):void
+    {
+        if (_scale9Grid == null)
+        {
             super.width = w;
             super.height = h;
         }
-        else {
+        else
+        {
             w = Math.max(w, _originalBitmap.width - _scale9Grid.width);
             h = Math.max(h, _originalBitmap.height - _scale9Grid.height);
             resizeBitmap(w, h);
@@ -284,7 +327,8 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * get original bitmap
      */
-    public function getOriginalBitmapData():BitmapData {
+    public function getOriginalBitmapData():BitmapData
+    {
         return _originalBitmap;
     }
 
@@ -297,7 +341,8 @@ internal class ScaleBitmap extends Bitmap {
     /**
      * resize bitmap
      */
-    protected function resizeBitmap(w:Number, h:Number):void {
+    protected function resizeBitmap(w:Number, h:Number):void
+    {
 
         var bmpData:BitmapData = new BitmapData(w, h, true, 0x00000000);
 
@@ -312,8 +357,10 @@ internal class ScaleBitmap extends Bitmap {
         var mat:Matrix = new Matrix();
 
 
-        for (var cx:int = 0; cx < 3; cx++) {
-            for (var cy:int = 0; cy < 3; cy++) {
+        for (var cx:int = 0; cx < 3; cx++)
+        {
+            for (var cy:int = 0; cy < 3; cy++)
+            {
                 origin = new Rectangle(cols[cx], rows[cy], cols[cx + 1] - cols[cx], rows[cy + 1] - rows[cy]);
                 draw = new Rectangle(dCols[cx], dRows[cy], dCols[cx + 1] - dCols[cx], dRows[cy + 1] - dRows[cy]);
                 mat.identity();

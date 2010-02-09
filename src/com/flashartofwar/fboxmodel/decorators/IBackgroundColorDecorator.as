@@ -1,11 +1,12 @@
 package com.flashartofwar.fboxmodel.decorators
 {
-public interface IBackgroundColorDecorator {
+    public interface IBackgroundColorDecorator
+    {
 
-    function get color():uint;
+        function get color():uint;
 
-    function set color(value:uint):void;
+        function set color(value:uint):void;
 
-    function get hasColor():Boolean;
-}
+        function get hasColor():Boolean;
+    }
 }

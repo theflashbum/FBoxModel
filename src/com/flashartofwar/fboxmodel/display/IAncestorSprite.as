@@ -28,55 +28,56 @@
  *
  */
 
-package com.flashartofwar.fboxmodel.display {
-import flash.display.DisplayObject;
-
-public interface IAncestorSprite
+package com.flashartofwar.fboxmodel.display
 {
-    //TODO add all supporting props to this Interface
+    import flash.display.DisplayObject;
+
+    public interface IAncestorSprite
+    {
+        //TODO add all supporting props to this Interface
 
 
-    function addChild(child:DisplayObject):DisplayObject;
+        function addChild(child:DisplayObject):DisplayObject;
 
-    function addChildAt(child:DisplayObject, index:int):DisplayObject;
+        function addChildAt(child:DisplayObject, index:int):DisplayObject;
 
-    function getChildAt(index:int):DisplayObject;
+        function getChildAt(index:int):DisplayObject;
 
-    function getChildByName(name:String):DisplayObject;
+        function getChildByName(name:String):DisplayObject;
 
-    function getChildIndex(child:DisplayObject):int;
+        function getChildIndex(child:DisplayObject):int;
 
-    function removeChild(child:DisplayObject):DisplayObject;
+        function removeChild(child:DisplayObject):DisplayObject;
 
-    function removeChildAt(index:int):DisplayObject;
+        function removeChildAt(index:int):DisplayObject;
 
-    function setChildIndex(child:DisplayObject, index:int):void;
+        function setChildIndex(child:DisplayObject, index:int):void;
 
-    function swapChildren(child1:DisplayObject, child2:DisplayObject):void;
+        function swapChildren(child1:DisplayObject, child2:DisplayObject):void;
 
-    function swapChildrenAt(index1:int, index2:int):void;
+        function swapChildrenAt(index1:int, index2:int):void;
 
-    function get x():Number;
+        function get x():Number;
 
-    function set x(value:Number):void;
+        function set x(value:Number):void;
 
-    function get y():Number;
+        function get y():Number;
 
-    function set y(value:Number):void;
+        function set y(value:Number):void;
 
-    function get alpha():Number;
+        function get alpha():Number;
 
-    function set alpha(value:Number):void;
+        function set alpha(value:Number):void;
 
-    function get scaleX():Number;
+        function get scaleX():Number;
 
-    function set scaleX(value:Number):void;
+        function set scaleX(value:Number):void;
 
-    function get width():Number;
+        function get width():Number;
 
-    function get height():Number;
+        function get height():Number;
 
-    function drawNow():void;
+        function drawNow():void;
 
-}
+    }
 }

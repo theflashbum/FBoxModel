@@ -28,13 +28,14 @@
  *
  */
 
-package com.flashartofwar.fboxmodel.enum {
-
-public class InvalidationType
+package com.flashartofwar.fboxmodel.enum
 {
-    public static const ALL:String = "all";
-    public static const LAYOUT:String = "layout";
-    public static const SIZE:String = "size";
-    public static const STYLES:String = "styles";
-}
+
+    public class InvalidationType
+    {
+        public static const ALL:String = "all";
+        public static const LAYOUT:String = "layout";
+        public static const SIZE:String = "size";
+        public static const STYLES:String = "styles";
+    }
 }

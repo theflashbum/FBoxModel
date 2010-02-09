@@ -1,34 +1,36 @@
-package com.flashartofwar.fboxmodel.decorators {
-import flash.geom.Rectangle;
+package com.flashartofwar.fboxmodel.decorators
+{
+    import flash.geom.Rectangle;
 
-public interface IBoxModelBorder {
+    public interface IBoxModelBorder
+    {
 
-    function get width():Number;
+        function get width():Number;
 
-    function set width(value:Number):void;
+        function set width(value:Number):void;
 
-    function get height():Number;
+        function get height():Number;
 
-    function set height(value:Number):void;
-    
-    function get borderRect():Rectangle;
+        function set height(value:Number):void;
 
-    function set borderRect(value:Rectangle):void;
+        function get borderRect():Rectangle;
 
-    function get alpha():Number;
+        function set borderRect(value:Rectangle):void;
 
-    function set alpha(value:Number):void;
+        function get alpha():Number;
 
-    function get color():uint;
+        function set alpha(value:Number):void;
 
-    function set color(value:uint):void;
+        function get color():uint;
 
-    function get borderOffsetX():Number;
+        function set color(value:uint):void;
 
-    function set borderOffsetX(value:Number):void;
+        function get borderOffsetX():Number;
 
-    function get borderOffsetY():Number;
+        function set borderOffsetX(value:Number):void;
 
-    function set borderOffsetY(value:Number):void;
-}
+        function get borderOffsetY():Number;
+
+        function set borderOffsetY(value:Number):void;
+    }
 }

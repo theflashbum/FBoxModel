@@ -1,4 +1,6 @@
-package com.flashartofwar.fboxmodel.decorators {
-public interface IDisplay {
-}
+package com.flashartofwar.fboxmodel.decorators
+{
+    public interface IDisplay
+    {
+    }
 }
