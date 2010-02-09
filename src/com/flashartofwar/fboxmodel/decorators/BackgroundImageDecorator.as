@@ -18,8 +18,8 @@ package com.flashartofwar.fboxmodel.decorators
         protected var _imageBitmap:Bitmap;
         protected var _scale9Grid:Rectangle;
         protected var _repeat:String;
-        protected var _positionY:Number;
-        protected var _positionX:Number;
+        protected var _positionY:Number = 0;
+        protected var _positionX:Number = 0;
 
         public function BackgroundImageDecorator(graphics:Graphics)
         {
@@ -87,8 +87,8 @@ package com.flashartofwar.fboxmodel.decorators
                 var bgiFullW:Number = width;
                 var bgiFullH:Number = height;
 
-                var bgOffsetX:Number = offsetX;
-                var bgOffsetY:Number = offsetY;
+                var bgX:Number = offsetX;
+                var bgY:Number = offsetY;
 
                 if (scale9Grid)
                 {
@@ -107,31 +107,30 @@ package com.flashartofwar.fboxmodel.decorators
                 switch (repeat)
                 {
                     case NO_REPEAT:
-
-                        bgOffsetX += imagePositionX;
-                        bgOffsetY += imagePositionY;
-                        m.translate(bgOffsetX, bgOffsetY);
+                        bgX = imagePositionX + offsetX;
+                        bgY = imagePositionY + offsetY;
+                        m.translate(bgX, bgY);
                         break;
                     case REPEAT_X:
                         bgiW = bgiFullW;
-                        m.translate(bgOffsetX, bgOffsetY);
+                        m.translate(bgX, bgY);
                         break;
                     case REPEAT_Y:
                         bgiH = bgiFullH;
-                        m.translate(bgOffsetX, bgOffsetY);
+                        m.translate(bgX, bgY);
                         break;
 
                     default:
                         bgiW = bgiFullW;
                         bgiH = bgiFullH;
-                        m.translate(bgOffsetX, bgOffsetY);
+                        m.translate(bgX, bgY);
                         break;
                 }
 
                 bmd.draw(imageBitmap, null, new ColorTransform(1, 1, 1, alpha));
 
                 graphics.beginBitmapFill(bmd, m, true, false);
-                graphics.drawRect(bgOffsetX, bgOffsetY, bgiW, bgiH);
+                graphics.drawRect(bgX, bgY, bgiW, bgiH);
                 graphics.endFill();
             }
 
