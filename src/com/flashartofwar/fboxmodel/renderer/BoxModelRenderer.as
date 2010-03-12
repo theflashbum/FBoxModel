@@ -46,7 +46,7 @@ package com.flashartofwar.fboxmodel.renderer
             borderDecorator = new BorderDecorator(graphics);
             backgroundColorDecorator = new BackgroundColorDecorator(graphics);
             backgroundImageDecorator = new BackgroundImageDecorator(graphics);
-            paddingDecorator = new PaddingDecorator(display);
+            paddingDecorator = new PaddingDecorator();
         }
 
 
@@ -77,15 +77,14 @@ package com.flashartofwar.fboxmodel.renderer
         {
             backgroundColorDecorator.offsetX = borderDecorator.left;
             backgroundColorDecorator.offsetY = borderDecorator.top;
-            backgroundColorDecorator.width = paddingDecorator.width;
-            backgroundColorDecorator.height = paddingDecorator.height;
-
+            backgroundColorDecorator.width = backgroundWidth;
+            backgroundColorDecorator.height = backgroundHeight;
             backgroundColorDecorator.draw();
 
             backgroundImageDecorator.offsetX = borderDecorator.left;
             backgroundImageDecorator.offsetY = borderDecorator.top;
-            backgroundImageDecorator.width = paddingDecorator.width;
-            backgroundImageDecorator.height = paddingDecorator.height;
+            backgroundImageDecorator.width = backgroundWidth;
+            backgroundImageDecorator.height = backgroundHeight;
 
             backgroundImageDecorator.draw();
         }
@@ -714,8 +713,7 @@ package com.flashartofwar.fboxmodel.renderer
 
         public function get width():Number
         {
-            var tempWidth:Number = display.width > _width ? display.width : _width;
-            return borderLeft + paddingLeft + tempWidth + paddingRight + borderRight;
+            return borderLeft + backgroundWidth + borderRight;
         }
 
         /**
@@ -724,7 +722,10 @@ package com.flashartofwar.fboxmodel.renderer
         public function set width(value:Number):void
         {
             if (_width == value) return;
+
             _width = ! isNaN(value) ? value : 0;
+
+            trace("_width", _width, value);
         }
 
         /**
@@ -732,8 +733,7 @@ package com.flashartofwar.fboxmodel.renderer
          */
         public function get height():Number
         {
-            var tempHeight:Number = display.height > _height ? display.height : _height;
-            return borderTop + paddingTop + tempHeight + paddingBottom + borderBottom;
+            return borderTop + backgroundHeight + borderBottom;
         }
 
         /**
@@ -763,14 +763,24 @@ package com.flashartofwar.fboxmodel.renderer
             return display.height > _height ? display.height : _height;
         }
 
+        public function get backgroundWidth():Number
+        {
+            return paddingDecorator.left + displayWidth + paddingDecorator.right;
+        }
+
+        public function get backgroundHeight():Number
+        {
+            return paddingDecorator.top + displayHeight + paddingDecorator.bottom;
+        }
+
         /**
          * Calculates the size of the border rectangle
          */
         public function calculateBorder():void
         {
-            borderDecorator.width = paddingDecorator.width + borderLeft + borderRight;
+            borderDecorator.width = backgroundWidth + borderLeft + borderRight;
 
-            borderDecorator.height = paddingDecorator.height + borderTop + borderBottom;
+            borderDecorator.height = backgroundHeight + borderTop + borderBottom;
         }
 
         /**

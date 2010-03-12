@@ -34,13 +34,9 @@ package com.flashartofwar.fboxmodel.decorators
          */
         protected function drawBackgroundColor():void
         {
-
-            alpha = isNaN(alpha) ? 1 : alpha;
-
-            graphics.beginFill(color, alpha);
+            graphics.beginFill(color, _backgroundColorAlpha);
             graphics.drawRect(offsetX, offsetY, width, height);
             graphics.endFill();
-
         }
 
         /**

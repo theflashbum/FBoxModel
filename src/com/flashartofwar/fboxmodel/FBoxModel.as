@@ -595,12 +595,14 @@ package com.flashartofwar.fboxmodel
         override public function set width(value:Number):void
         {
             renderer.width = value;
+            dispatchEvent(new Event(Event.RESIZE));
             invalidate();
         }
 
         override public function set height(value:Number):void
         {
             renderer.height = value;
+            dispatchEvent(new Event(Event.RESIZE));
             invalidate();
         }
 
@@ -660,10 +662,7 @@ package com.flashartofwar.fboxmodel
         protected function draw():void
         {
             dispatchEvent(new Event(DRAW));
-
-            //TODO This is removed because it is expensive
-            //invalidationHash = new Dictionary();
-
+            trace(name, "draw");
             renderer.drawBoxModel();
         }
 
