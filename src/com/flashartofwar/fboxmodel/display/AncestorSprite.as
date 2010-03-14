@@ -8,7 +8,7 @@ package com.flashartofwar.fboxmodel.display
 
     public class AncestorSprite extends Sprite implements IAncestorSprite
     {
-        protected var _display:DisplayObjectContainer;
+        protected var _display:Sprite;
         protected var registeredListeners:Dictionary = new Dictionary();
 
         /**

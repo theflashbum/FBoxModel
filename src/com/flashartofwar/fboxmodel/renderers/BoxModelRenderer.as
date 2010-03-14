@@ -1,4 +1,4 @@
-package com.flashartofwar.fboxmodel.renderer
+package com.flashartofwar.fboxmodel.renderers
 {
     import com.flashartofwar.fboxmodel.decorators.BackgroundColorDecorator;
     import com.flashartofwar.fboxmodel.decorators.BackgroundImageDecorator;
@@ -8,6 +8,7 @@ package com.flashartofwar.fboxmodel.renderer
     import flash.display.Bitmap;
     import flash.display.DisplayObjectContainer;
     import flash.display.Graphics;
+    import flash.display.Sprite;
     import flash.events.Event;
     import flash.geom.Rectangle;
 
@@ -32,7 +33,7 @@ package com.flashartofwar.fboxmodel.renderer
         protected var _width:Number = 0;
         protected var _height:Number = 0;
 
-        public function BoxModelRenderer(display:DisplayObjectContainer, graphics:Graphics)
+        public function BoxModelRenderer(display:Sprite, graphics:Graphics)
         {
 
             this.graphics = graphics;

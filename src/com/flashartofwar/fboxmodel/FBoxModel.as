@@ -1,13 +1,13 @@
 package com.flashartofwar.fboxmodel
 {
     import com.flashartofwar.fboxmodel.display.AncestorSprite;
-    import com.flashartofwar.fboxmodel.renderer.BoxModelRenderer;
-    import com.flashartofwar.fboxmodel.renderer.IBoxModelRenderer;
+    import com.flashartofwar.fboxmodel.renderers.BoxModelRenderer;
+    import com.flashartofwar.fboxmodel.renderers.IBoxModelRenderer;
 
     import flash.display.Bitmap;
     import flash.display.BitmapData;
     import flash.display.DisplayObject;
-    import flash.display.DisplayObjectContainer;
+    import flash.display.Sprite;
     import flash.events.Event;
     import flash.geom.Rectangle;
 
@@ -15,26 +15,31 @@ package com.flashartofwar.fboxmodel
     {
 
         public static const DRAW:String = "draw";
-
         protected var _invalid:Boolean;
-        protected var renderer:BoxModelRenderer;
+        protected var boxModelRenderer:BoxModelRenderer;
 
         public function FBoxModel()
         {
             super(this);
-            renderer = new BoxModelRenderer(_display, graphics);
-            //TODO this can removed once BoxModelRenderer is setup
+            init();
+        }
+
+        protected function init():void {
+            boxModelRenderer = createRenderer();
             addStageListeners();
         }
 
-
+        protected function createRenderer():BoxModelRenderer {
+            return new BoxModelRenderer(display, graphics);
+        }
+        
         /**
          * The fill color of the background
          * @return uint
          */
         public function get backgroundColor():uint
         {
-            return renderer.backgroundColor;
+            return boxModelRenderer.backgroundColor;
         }
 
         /**
@@ -42,7 +47,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundColor(value:uint):void
         {
-            renderer.backgroundColor = value;
+            boxModelRenderer.backgroundColor = value;
             invalidate();
         }
 
@@ -52,7 +57,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderColor():uint
         {
-            return renderer.borderColor;
+            return boxModelRenderer.borderColor;
         }
 
         /**
@@ -60,7 +65,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderColor(value:uint):void
         {
-            renderer.borderColor = value;
+            boxModelRenderer.borderColor = value;
             invalidate();
         }
 
@@ -69,7 +74,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundPosition(value:String):void
         {
-            renderer.backgroundPosition = value;
+            boxModelRenderer.backgroundPosition = value;
 
             invalidate();
         }
@@ -88,7 +93,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set padding(values:Array):void
         {
-            renderer.padding = values;
+            boxModelRenderer.padding = values;
             invalidate();
         }
 
@@ -106,7 +111,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set margin(values:Array):void
         {
-            renderer.margin = values;
+            boxModelRenderer.margin = values;
 
             invalidate();
         }
@@ -117,7 +122,7 @@ package com.flashartofwar.fboxmodel
          */
         override public function get width():Number
         {
-            return renderer.width;
+            return boxModelRenderer.width;
         }
 
         /**
@@ -126,7 +131,7 @@ package com.flashartofwar.fboxmodel
          */
         override public function get height():Number
         {
-            return renderer.height;
+            return boxModelRenderer.height;
         }
 
         /**
@@ -134,7 +139,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set border(value:String):void
         {
-            renderer.border = value;
+            boxModelRenderer.border = value;
 
             invalidate();
         }
@@ -162,7 +167,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundScale9Grid():Rectangle
         {
-            return renderer.backgroundScale9Grid;
+            return boxModelRenderer.backgroundScale9Grid;
         }
 
         /**
@@ -170,7 +175,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundScale9Grid(backgroundScale9Grid:Rectangle):void
         {
-            renderer.backgroundScale9Grid = backgroundScale9Grid;
+            boxModelRenderer.backgroundScale9Grid = backgroundScale9Grid;
             invalidate();
         }
 
@@ -180,7 +185,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundRepeat():String
         {
-            return renderer.backgroundRepeat;
+            return boxModelRenderer.backgroundRepeat;
         }
 
         /**
@@ -188,7 +193,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundRepeat(backgroundRepeat:String):void
         {
-            renderer.backgroundRepeat = backgroundRepeat;
+            boxModelRenderer.backgroundRepeat = backgroundRepeat;
             invalidate();
         }
 
@@ -198,7 +203,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundColorAlpha():Number
         {
-            return renderer.backgroundColorAlpha;
+            return boxModelRenderer.backgroundColorAlpha;
         }
 
         /**
@@ -206,7 +211,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundColorAlpha(backgroundColorAlpha:Number):void
         {
-            renderer.backgroundColorAlpha = backgroundColorAlpha;
+            boxModelRenderer.backgroundColorAlpha = backgroundColorAlpha;
             invalidate();
         }
 
@@ -216,7 +221,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get paddingTop():Number
         {
-            return renderer.paddingTop;
+            return boxModelRenderer.paddingTop;
         }
 
         /**
@@ -224,7 +229,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set paddingTop(paddingTop:Number):void
         {
-            renderer.paddingTop = paddingTop;
+            boxModelRenderer.paddingTop = paddingTop;
             invalidate();
         }
 
@@ -234,7 +239,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get paddingRight():Number
         {
-            return renderer.paddingRight;
+            return boxModelRenderer.paddingRight;
         }
 
         /**
@@ -242,7 +247,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set paddingRight(paddingRight:Number):void
         {
-            renderer.paddingRight = paddingRight;
+            boxModelRenderer.paddingRight = paddingRight;
             invalidate();
         }
 
@@ -252,7 +257,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get paddingBottom():Number
         {
-            return renderer.paddingBottom;
+            return boxModelRenderer.paddingBottom;
         }
 
         /**
@@ -260,7 +265,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set paddingBottom(paddingBottom:Number):void
         {
-            renderer.paddingBottom = paddingBottom;
+            boxModelRenderer.paddingBottom = paddingBottom;
             invalidate();
         }
 
@@ -270,7 +275,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get paddingLeft():Number
         {
-            return renderer.paddingLeft;
+            return boxModelRenderer.paddingLeft;
         }
 
         /**
@@ -278,7 +283,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set paddingLeft(paddingLeft:Number):void
         {
-            renderer.paddingLeft = paddingLeft;
+            boxModelRenderer.paddingLeft = paddingLeft;
             invalidate();
         }
 
@@ -288,7 +293,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get marginTop():Number
         {
-            return renderer.marginTop;
+            return boxModelRenderer.marginTop;
         }
 
         /**
@@ -296,7 +301,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set marginTop(marginTop:Number):void
         {
-            renderer.marginTop = marginTop;
+            boxModelRenderer.marginTop = marginTop;
             invalidate();
         }
 
@@ -306,7 +311,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get marginRight():Number
         {
-            return renderer.marginRight;
+            return boxModelRenderer.marginRight;
         }
 
         /**
@@ -314,7 +319,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set marginRight(marginRight:Number):void
         {
-            renderer.marginRight = marginRight;
+            boxModelRenderer.marginRight = marginRight;
             invalidate();
         }
 
@@ -324,7 +329,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get marginBottom():Number
         {
-            return renderer.marginBottom;
+            return boxModelRenderer.marginBottom;
         }
 
         /**
@@ -332,7 +337,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set marginBottom(marginBottom:Number):void
         {
-            renderer.marginBottom = marginBottom;
+            boxModelRenderer.marginBottom = marginBottom;
             invalidate();
         }
 
@@ -342,7 +347,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get marginLeft():Number
         {
-            return renderer.marginLeft;
+            return boxModelRenderer.marginLeft;
         }
 
         /**
@@ -350,7 +355,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set marginLeft(marginLeft:Number):void
         {
-            renderer.marginLeft = marginLeft;
+            boxModelRenderer.marginLeft = marginLeft;
             invalidate();
         }
 
@@ -360,7 +365,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderTop():Number
         {
-            return renderer.borderTop;
+            return boxModelRenderer.borderTop;
         }
 
         /**
@@ -368,7 +373,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderTop(borderTop:Number):void
         {
-            renderer.borderTop = borderTop;
+            boxModelRenderer.borderTop = borderTop;
             invalidate();
         }
 
@@ -378,7 +383,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderRight():Number
         {
-            return renderer.borderRight;
+            return boxModelRenderer.borderRight;
         }
 
         /**
@@ -386,7 +391,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderRight(borderRight:Number):void
         {
-            renderer.borderRight = borderRight;
+            boxModelRenderer.borderRight = borderRight;
             invalidate();
         }
 
@@ -396,7 +401,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderBottom():Number
         {
-            return renderer.borderBottom;
+            return boxModelRenderer.borderBottom;
         }
 
         /**
@@ -404,7 +409,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderBottom(borderBottom:Number):void
         {
-            renderer.borderBottom = borderBottom;
+            boxModelRenderer.borderBottom = borderBottom;
             invalidate();
         }
 
@@ -414,7 +419,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderLeft():Number
         {
-            return renderer.borderLeft;
+            return boxModelRenderer.borderLeft;
         }
 
         /**
@@ -422,7 +427,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderLeft(borderLeft:Number):void
         {
-            renderer.borderLeft = borderLeft;
+            boxModelRenderer.borderLeft = borderLeft;
             invalidate();
         }
 
@@ -432,7 +437,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get borderAlpha():Number
         {
-            return renderer.borderAlpha;
+            return boxModelRenderer.borderAlpha;
         }
 
         /**
@@ -440,7 +445,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set borderAlpha(borderAlpha:Number):void
         {
-            renderer.borderAlpha = borderAlpha;
+            boxModelRenderer.borderAlpha = borderAlpha;
             invalidate();
         }
 
@@ -450,7 +455,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundPositionX():Number
         {
-            return renderer.backgroundPositionX;
+            return boxModelRenderer.backgroundPositionX;
         }
 
         /**
@@ -458,7 +463,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundPositionX(backgroundPositionX:Number):void
         {
-            renderer.backgroundPositionX = backgroundPositionX;
+            boxModelRenderer.backgroundPositionX = backgroundPositionX;
             invalidate();
         }
 
@@ -468,7 +473,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundPositionY():Number
         {
-            return renderer.backgroundPositionY;
+            return boxModelRenderer.backgroundPositionY;
         }
 
         /**
@@ -476,7 +481,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundPositionY(backgroundPositionY:Number):void
         {
-            renderer.backgroundPositionY = backgroundPositionY;
+            boxModelRenderer.backgroundPositionY = backgroundPositionY;
             invalidate();
         }
 
@@ -486,7 +491,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get debugPadding():Boolean
         {
-            return renderer.debugPadding;
+            return boxModelRenderer.debugPadding;
         }
 
         /**
@@ -494,7 +499,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set debugPadding(debugPadding:Boolean):void
         {
-            renderer.debugPadding = debugPadding;
+            boxModelRenderer.debugPadding = debugPadding;
             invalidate();
         }
 
@@ -504,7 +509,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get debugPaddingColor():uint
         {
-            return renderer.debugPaddingColor;
+            return boxModelRenderer.debugPaddingColor;
         }
 
         /**
@@ -512,7 +517,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set debugPaddingColor(debugPaddingColor:uint):void
         {
-            renderer.debugPaddingColor = debugPaddingColor;
+            boxModelRenderer.debugPaddingColor = debugPaddingColor;
             invalidate();
         }
 
@@ -522,7 +527,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundImageBitmap():Bitmap
         {
-            return renderer.backgroundImageBitmap;
+            return boxModelRenderer.backgroundImageBitmap;
         }
 
         /**
@@ -530,7 +535,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundImageBitmap(backgroundImageBitmap:Bitmap):void
         {
-            renderer.backgroundImageBitmap = backgroundImageBitmap;
+            boxModelRenderer.backgroundImageBitmap = backgroundImageBitmap;
             invalidate();
         }
 
@@ -540,7 +545,7 @@ package com.flashartofwar.fboxmodel
          */
         public function get backgroundImageAlpha():Number
         {
-            return renderer.backgroundImageAlpha;
+            return boxModelRenderer.backgroundImageAlpha;
         }
 
         /**
@@ -548,7 +553,7 @@ package com.flashartofwar.fboxmodel
          */
         public function set backgroundImageAlpha(backgroundImageAlpha:Number):void
         {
-            renderer.backgroundImageAlpha = backgroundImageAlpha;
+            boxModelRenderer.backgroundImageAlpha = backgroundImageAlpha;
             invalidate();
         }
 
@@ -564,44 +569,50 @@ package com.flashartofwar.fboxmodel
 
         public function clearProperties():void
         {
-            renderer.clearProperties();
+            boxModelRenderer.clearProperties();
             invalidate();
         }
 
         public function clearPadding():void
         {
-            renderer.clearPadding();
+            boxModelRenderer.clearPadding();
             invalidate();
         }
 
         public function clearMargin():void
         {
-            renderer.clearMargin();
+            boxModelRenderer.clearMargin();
             invalidate();
         }
 
         public function clearBorder():void
         {
-            renderer.clearBorder();
+            boxModelRenderer.clearBorder();
             invalidate();
         }
 
         public function clearBackground():void
         {
-            renderer.clearBackground();
+            boxModelRenderer.clearBackground();
+            invalidate();
+        }
+
+        public function clearBackgroundImage():void
+        {
+            boxModelRenderer.clearBackgroundImage();
             invalidate();
         }
 
         override public function set width(value:Number):void
         {
-            renderer.width = value;
+            boxModelRenderer.width = value;
             dispatchEvent(new Event(Event.RESIZE));
             invalidate();
         }
 
         override public function set height(value:Number):void
         {
-            renderer.height = value;
+            boxModelRenderer.height = value;
             dispatchEvent(new Event(Event.RESIZE));
             invalidate();
         }
@@ -663,7 +674,7 @@ package com.flashartofwar.fboxmodel
         {
             dispatchEvent(new Event(DRAW));
             trace(name, "draw");
-            renderer.drawBoxModel();
+            boxModelRenderer.drawBoxModel();
         }
 
         protected function invalidate(type:String = "all"):void
@@ -716,12 +727,12 @@ package com.flashartofwar.fboxmodel
             addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, false, 0, true);
         }
 
-        public function get display():DisplayObjectContainer
+        public function get display():Sprite
         {
             return _display;
         }
 
-        public function set display(value:DisplayObjectContainer):void
+        public function set display(value:Sprite):void
         {
             _display = value;
         }
