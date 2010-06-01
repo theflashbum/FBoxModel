@@ -7,6 +7,7 @@ package com.flashartofwar.fboxmodel.decorators
 
         protected var _backgroundColorAlpha:Number = 1;
         protected var _backgroundColor:uint;
+        protected var colorSet:Boolean;
 
         public function BackgroundColorDecorator(graphics:Graphics)
         {
@@ -21,11 +22,12 @@ package com.flashartofwar.fboxmodel.decorators
         public function set color(value:uint):void
         {
             _backgroundColor = value;
+            colorSet = !isNaN(color);
         }
 
         public function get hasColor():Boolean
         {
-            return !isNaN(color);
+            return colorSet;
         }
 
         /**

@@ -14,7 +14,7 @@ package com.flashartofwar.fboxmodel
     public class FBoxModel extends AncestorSprite implements IBoxModel,IBoxModelRenderer
     {
 
-        public static const DRAW:String = "com.flashartofwar.fboxmodel.draw";
+        public static const DRAW:String = "draw";
         protected var _invalid:Boolean;
         protected var boxModelRenderer:BoxModelRenderer;
 
@@ -642,6 +642,7 @@ package com.flashartofwar.fboxmodel
         /**
          *
          * @param targetCoordinateSpace
+         * @return
          *
          */
         override public function getBounds(targetCoordinateSpace:DisplayObject):Rectangle
@@ -653,6 +654,7 @@ package com.flashartofwar.fboxmodel
         /**
          *
          * @param targetCoordinateSpace
+         * @return
          *
          */
         override public function getRect(targetCoordinateSpace:DisplayObject):Rectangle
@@ -671,6 +673,7 @@ package com.flashartofwar.fboxmodel
         protected function draw():void
         {
             dispatchEvent(new Event(DRAW));
+            trace(name, "draw");
             boxModelRenderer.drawBoxModel();
         }
 

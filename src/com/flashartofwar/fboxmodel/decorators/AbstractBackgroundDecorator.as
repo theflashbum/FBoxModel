@@ -6,8 +6,8 @@ package com.flashartofwar.fboxmodel.decorators
     {
 
         protected var _alpha:Number = 1;
-        protected var _offsetX:Number;
-        protected var _offsetY:Number;
+        protected var _offsetX:Number = 0;
+        protected var _offsetY:Number = 0;
         protected var _width:Number;
         protected var _height:Number;
         protected var _graphics:Graphics;
