@@ -8,8 +8,8 @@ package com.flashartofwar.fboxmodel.decorators
         protected var _alpha:Number = 1;
         protected var _offsetX:Number = 0;
         protected var _offsetY:Number = 0;
-        protected var _width:Number;
-        protected var _height:Number;
+        protected var _width:Number = 0;
+        protected var _height:Number = 0;
         protected var _graphics:Graphics;
 
         public function AbstractBackgroundDecorator(graphics:Graphics)
@@ -84,6 +84,15 @@ package com.flashartofwar.fboxmodel.decorators
         public function draw():void
         {
 
+        }
+
+        public function clear():void
+        {
+            _alpha = 1;
+            _offsetX = 0;
+            _offsetY = 0;
+            _width = 0;
+            _height = 0;
         }
 
     }

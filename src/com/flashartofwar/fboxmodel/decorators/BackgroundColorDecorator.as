@@ -5,9 +5,8 @@ package com.flashartofwar.fboxmodel.decorators
     public class BackgroundColorDecorator extends AbstractBackgroundDecorator implements IBackgroundColorDecorator
     {
 
-        protected var _backgroundColorAlpha:Number = 1;
-        protected var _backgroundColor:uint;
-        protected var colorSet:Boolean;
+        protected var _color:uint = NaN;
+        protected var _hasColor:Boolean;
 
         public function BackgroundColorDecorator(graphics:Graphics)
         {
@@ -16,18 +15,19 @@ package com.flashartofwar.fboxmodel.decorators
 
         public function get color():uint
         {
-            return _backgroundColor;
+            return _color;
         }
 
         public function set color(value:uint):void
         {
-            _backgroundColor = value;
-            colorSet = !isNaN(color);
+            _hasColor = true;
+            _color = value;
+
         }
 
         public function get hasColor():Boolean
         {
-            return colorSet;
+            return _hasColor;
         }
 
         /**
@@ -36,7 +36,7 @@ package com.flashartofwar.fboxmodel.decorators
          */
         protected function drawBackgroundColor():void
         {
-            graphics.beginFill(color, _backgroundColorAlpha);
+            graphics.beginFill(color, _alpha);
             graphics.drawRect(offsetX, offsetY, width, height);
             graphics.endFill();
         }
@@ -51,7 +51,12 @@ package com.flashartofwar.fboxmodel.decorators
             if (hasColor) drawBackgroundColor();
         }
 
-
+        override public function clear():void
+        {
+            super.clear();
+            _color = 0;
+            _hasColor = false;
+        }
     }
 }
 
