@@ -673,7 +673,6 @@ package com.flashartofwar.fboxmodel
         protected function draw():void
         {
             dispatchEvent(new Event(DRAW));
-            trace(name, "draw");
             boxModelRenderer.drawBoxModel();
         }
 
