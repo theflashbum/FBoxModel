@@ -3,6 +3,7 @@ package com.flashartofwar.fboxmodel.renderers
     import com.flashartofwar.fboxmodel.decorators.BackgroundColorDecorator;
     import com.flashartofwar.fboxmodel.decorators.BackgroundImageDecorator;
     import com.flashartofwar.fboxmodel.decorators.BorderDecorator;
+    import com.flashartofwar.fboxmodel.decorators.MarginDecorator;
     import com.flashartofwar.fboxmodel.decorators.PaddingDecorator;
 
     import flash.display.Bitmap;
@@ -24,14 +25,11 @@ package com.flashartofwar.fboxmodel.renderers
         protected var backgroundColorDecorator:BackgroundColorDecorator;
         protected var backgroundImageDecorator:BackgroundImageDecorator;
         protected var DELIMITER:String = " ";
-        protected var _marginTop:Number = 0;
-        protected var _marginRight:Number = 0;
-        protected var _marginBottom:Number = 0;
-        protected var _marginLeft:Number = 0;
         protected var _debugPadding:Boolean = false;
         protected var _debugPaddingColor:uint = 0xFFFF00;
         protected var _width:Number = 0;
         protected var _height:Number = 0;
+        protected var marginDecorator:MarginDecorator;
 
         public function BoxModelRenderer(display:Sprite, graphics:Graphics)
         {
@@ -48,6 +46,7 @@ package com.flashartofwar.fboxmodel.renderers
             backgroundColorDecorator = new BackgroundColorDecorator(graphics);
             backgroundImageDecorator = new BackgroundImageDecorator(graphics);
             paddingDecorator = new PaddingDecorator();
+            marginDecorator = new MarginDecorator();
         }
 
 
@@ -70,26 +69,6 @@ package com.flashartofwar.fboxmodel.renderers
 
         }
 
-        /**
-         *
-         *
-         */
-        protected function drawBackground():void
-        {
-            backgroundColorDecorator.offsetX = borderDecorator.left;
-            backgroundColorDecorator.offsetY = borderDecorator.top;
-            backgroundColorDecorator.width = backgroundWidth;
-            backgroundColorDecorator.height = backgroundHeight;
-            backgroundColorDecorator.draw();
-
-            backgroundImageDecorator.offsetX = borderDecorator.left;
-            backgroundImageDecorator.offsetY = borderDecorator.top;
-            backgroundImageDecorator.width = backgroundWidth;
-            backgroundImageDecorator.height = backgroundHeight;
-
-            backgroundImageDecorator.draw();
-        }
-
         public function drawBoxModel():void
         {
 
@@ -108,6 +87,27 @@ package com.flashartofwar.fboxmodel.renderers
 
         }
 
+
+        /**
+         *
+         *
+         */
+        protected function drawBackground():void
+        {
+            backgroundColorDecorator.offsetX = borderDecorator.left + marginDecorator.left;
+            backgroundColorDecorator.offsetY = borderDecorator.top + marginDecorator.top;
+            backgroundColorDecorator.width = backgroundWidth;
+            backgroundColorDecorator.height = backgroundHeight;
+            backgroundColorDecorator.draw();
+
+            backgroundImageDecorator.offsetX = borderDecorator.left;
+            backgroundImageDecorator.offsetY = borderDecorator.top;
+            backgroundImageDecorator.width = backgroundWidth;
+            backgroundImageDecorator.height = backgroundHeight;
+
+            backgroundImageDecorator.draw();
+        }
+
         /**
          * Aligns the display with the appripriate padding, border
          */
@@ -122,6 +122,8 @@ package com.flashartofwar.fboxmodel.renderers
          */
         protected function drawBorder():void
         {
+            borderDecorator.borderOffsetX = marginDecorator.left;
+            borderDecorator.borderOffsetY = marginDecorator.top;
             borderDecorator.draw();
         }
 
@@ -206,15 +208,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set margin(values:Array):void
         {
-
-            //TODO this will be fixed once we have a margin decorator
-            /*values = validateOffset(values);
-             marginTop = values[0];
-             marginRight = values[1];
-             marginBottom = values[2];
-             marginLeft = values[3];
-             */
-
+            marginDecorator.boxValues = values;
         }
 
         /**
@@ -379,7 +373,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function get marginTop():Number
         {
-            return _marginTop;
+            return marginDecorator.top;
         }
 
         /**
@@ -387,7 +381,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set marginTop(marginTop:Number):void
         {
-            _marginTop = marginTop;
+            marginDecorator.top = marginTop;
 
         }
 
@@ -397,7 +391,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function get marginRight():Number
         {
-            return _marginRight;
+            return marginDecorator.right;
         }
 
         /**
@@ -405,7 +399,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set marginRight(marginRight:Number):void
         {
-            _marginRight = marginRight;
+            marginDecorator.right = marginRight;
 
         }
 
@@ -415,7 +409,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function get marginBottom():Number
         {
-            return _marginBottom;
+            return marginDecorator.bottom;
         }
 
         /**
@@ -423,7 +417,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set marginBottom(marginBottom:Number):void
         {
-            _marginBottom = marginBottom;
+            marginDecorator.bottom = marginBottom;
 
         }
 
@@ -433,7 +427,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function get marginLeft():Number
         {
-            return _marginLeft;
+            return marginDecorator.left;
         }
 
         /**
@@ -441,7 +435,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set marginLeft(marginLeft:Number):void
         {
-            _marginLeft = marginLeft;
+            marginDecorator.left = marginLeft;
 
         }
 
@@ -714,7 +708,7 @@ package com.flashartofwar.fboxmodel.renderers
 
         public function get width():Number
         {
-            return borderLeft + backgroundWidth + borderRight;
+            return marginLeft + borderLeft + backgroundWidth + borderRight + marginRight;
         }
 
         /**
@@ -726,7 +720,6 @@ package com.flashartofwar.fboxmodel.renderers
 
             _width = ! isNaN(value) ? value : 0;
 
-            trace("_width", _width, value);
         }
 
         /**
@@ -734,7 +727,7 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function get height():Number
         {
-            return borderTop + backgroundHeight + borderBottom;
+            return marginTop + borderTop + backgroundHeight + borderBottom + marginBottom;
         }
 
         /**
@@ -780,7 +773,6 @@ package com.flashartofwar.fboxmodel.renderers
         public function calculateBorder():void
         {
             borderDecorator.width = backgroundWidth + borderLeft + borderRight;
-
             borderDecorator.height = backgroundHeight + borderTop + borderBottom;
         }
 

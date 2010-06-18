@@ -312,6 +312,7 @@ package com.flashartofwar.fboxmodel
         public function get marginRight():Number
         {
             return boxModelRenderer.marginRight;
+            invalidate();
         }
 
         /**
@@ -330,6 +331,7 @@ package com.flashartofwar.fboxmodel
         public function get marginBottom():Number
         {
             return boxModelRenderer.marginBottom;
+            invalidate();
         }
 
         /**
