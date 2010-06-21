@@ -113,8 +113,8 @@ package com.flashartofwar.fboxmodel.renderers
          */
         protected function alignDisplay():void
         {
-            display.x = paddingLeft + borderLeft;
-            display.y = paddingTop + borderTop;
+            display.x = marginLeft + paddingLeft + borderLeft;
+            display.y = marginTop + paddingTop + borderTop;
         }
 
         /**
