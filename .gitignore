@@ -23,3 +23,6 @@ Thumbs.db
 .DS_Store
 
 build.properties
+
+*.swp
+*~

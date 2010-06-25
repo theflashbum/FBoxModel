@@ -8,6 +8,7 @@
 		<![CDATA[
 
         import com.flashartofwar.fboxmodel.FBoxModel;
+        import com.flashartofwar.fboxmodel.FBoxModelTestSuite;
 
         import org.flexunit.internals.TraceListener;
 			import org.flexunit.listeners.CIListener;
@@ -25,7 +26,7 @@
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());
 				core.addListener(new TraceListener());
-				core.run(FBoxModel);
+				core.run(FBoxModelTestSuite);
 			}
 		]]>
 	</mx:Script>
