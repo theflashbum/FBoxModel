@@ -20,6 +20,7 @@ package com.flashartofwar.fboxmodel.decorators
         protected var _repeat:String;
         protected var _positionY:Number = 0;
         protected var _positionX:Number = 0;
+        protected var isScale9GridApplied:Boolean;
 
         public function BackgroundImageDecorator(graphics:Graphics)
         {
@@ -44,6 +45,7 @@ package com.flashartofwar.fboxmodel.decorators
         public function set scale9Grid(value:Rectangle):void
         {
             _scale9Grid = value;
+            isScale9GridApplied = false;
         }
 
         public function get repeat():String
@@ -90,12 +92,17 @@ package com.flashartofwar.fboxmodel.decorators
                 var bgX:Number = offsetX;
                 var bgY:Number = offsetY;
 
-                if (scale9Grid)
+                if (scale9Grid && !isScale9GridApplied)
                 {
                     imageBitmap = new ScaleBitmap(imageBitmap.bitmapData);
-                    imageBitmap.scale9Grid = scale9Grid;
-                    (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
+                    imageBitmap.scale9Grid = scale9Grid;                    
+
+                    //TODO this needs to be fixed
+                    isScale9GridApplied = true;
                 }
+
+                if(scale9Grid)
+                    (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
 
                 var bgiW:Number = imageBitmap.width;
                 var bgiH:Number = imageBitmap.height;
