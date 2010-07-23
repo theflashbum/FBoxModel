@@ -21,6 +21,7 @@ package com.flashartofwar.fboxmodel.decorators
         protected var _positionY:Number = 0;
         protected var _positionX:Number = 0;
         protected var isScale9GridApplied:Boolean;
+        protected var _roundCorners:Number = 0;
 
         public function BackgroundImageDecorator(graphics:Graphics)
         {
@@ -95,13 +96,13 @@ package com.flashartofwar.fboxmodel.decorators
                 if (scale9Grid && !isScale9GridApplied)
                 {
                     imageBitmap = new ScaleBitmap(imageBitmap.bitmapData);
-                    imageBitmap.scale9Grid = scale9Grid;                    
+                    imageBitmap.scale9Grid = scale9Grid;
 
                     //TODO this needs to be fixed
                     isScale9GridApplied = true;
                 }
 
-                if(scale9Grid)
+                if (scale9Grid)
                     (imageBitmap as ScaleBitmap).setSize(bgiFullW, bgiFullH);
 
                 var bgiW:Number = imageBitmap.width;
@@ -153,6 +154,10 @@ package com.flashartofwar.fboxmodel.decorators
         }
 
 
+        public function set roundCorners(value:Number):void
+        {
+            _roundCorners = value;
+        }
     }
 }
 /**

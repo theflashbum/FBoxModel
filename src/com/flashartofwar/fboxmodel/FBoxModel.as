@@ -24,15 +24,17 @@ package com.flashartofwar.fboxmodel
             init();
         }
 
-        protected function init():void {
+        protected function init():void
+        {
             boxModelRenderer = createRenderer();
             addStageListeners();
         }
 
-        protected function createRenderer():BoxModelRenderer {
+        protected function createRenderer():BoxModelRenderer
+        {
             return new BoxModelRenderer(display, graphics);
         }
-        
+
         /**
          * The fill color of the background
          * @return uint
@@ -736,6 +738,11 @@ package com.flashartofwar.fboxmodel
         public function set display(value:Sprite):void
         {
             _display = value;
+        }
+
+        public function set roundCorners(value:int):void
+        {
+            boxModelRenderer.roundCorners = value;
         }
 
     }

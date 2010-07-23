@@ -7,6 +7,7 @@ package com.flashartofwar.fboxmodel.decorators
 
         protected var _color:uint = NaN;
         protected var _hasColor:Boolean;
+        private var _roundCorners:int = 0;
 
         public function BackgroundColorDecorator(graphics:Graphics)
         {
@@ -37,7 +38,16 @@ package com.flashartofwar.fboxmodel.decorators
         protected function drawBackgroundColor():void
         {
             graphics.beginFill(color, _alpha);
-            graphics.drawRect(offsetX, offsetY, width, height);
+
+            if (_roundCorners == 0)
+            {
+                graphics.drawRect(offsetX, offsetY, width, height);
+            }
+            else
+            {
+                graphics.drawRoundRect(offsetX, offsetY, width, height, _roundCorners);
+            }
+
             graphics.endFill();
         }
 
@@ -56,6 +66,11 @@ package com.flashartofwar.fboxmodel.decorators
             super.clear();
             _color = 0;
             _hasColor = false;
+        }
+
+        public function set roundCorners(value:int):void
+        {
+            _roundCorners = value;
         }
     }
 }

@@ -10,6 +10,7 @@ package com.flashartofwar.fboxmodel.decorators
         protected var _borderAlpha:Number = 1;
         protected var _borderColor:uint = 0x000000;
         protected var _graphics:Graphics;
+        private var _roundCorners:int = 0;
 
         public function BorderDecorator(graphics:Graphics)
         {
@@ -130,13 +131,26 @@ package com.flashartofwar.fboxmodel.decorators
             if (hasBorder)
             {
                 graphics.beginFill(_borderColor, _borderAlpha);
-                graphics.drawRect(_borderRect.x, _borderRect.y, _borderRect.width, _borderRect.height);
+
                 //TODO this could be optimized by pre-calculating when setting the width and height
-                graphics.drawRect(_borderRect.x + left, _borderRect.y + top, _borderRect.width - (left + right), _borderRect.height - (top + bottom));
+                if (_roundCorners == 0)
+                {
+                    graphics.drawRect(_borderRect.x, _borderRect.y, _borderRect.width, _borderRect.height);
+                    graphics.drawRect(_borderRect.x + left, _borderRect.y + top, _borderRect.width - (left + right), _borderRect.height - (top + bottom));
+                }
+                else
+                {
+                    graphics.drawRoundRect(_borderRect.x, _borderRect.y, _borderRect.width, _borderRect.height, _roundCorners);
+                    graphics.drawRoundRect(_borderRect.x + left, _borderRect.y + top, _borderRect.width - (left + right), _borderRect.height - (top + bottom), _roundCorners);
+                }
                 graphics.endFill();
             }
         }
 
+        public function set roundCorners(value:int):void
+        {
+            _roundCorners = value
+        }
     }
 
 }

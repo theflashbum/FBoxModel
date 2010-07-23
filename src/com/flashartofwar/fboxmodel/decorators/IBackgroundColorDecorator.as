@@ -8,5 +8,7 @@ package com.flashartofwar.fboxmodel.decorators
         function set color(value:uint):void;
 
         function get hasColor():Boolean;
+
+        function set roundCorners(value:int):void;
     }
 }

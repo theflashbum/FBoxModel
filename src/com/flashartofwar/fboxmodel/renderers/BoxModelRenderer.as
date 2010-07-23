@@ -20,35 +20,22 @@ package com.flashartofwar.fboxmodel.renderers
 
         protected var graphics:Graphics;
         protected var display:DisplayObjectContainer;
-        protected var borderDecorator:BorderDecorator;
-        protected var paddingDecorator:PaddingDecorator;
-        protected var backgroundColorDecorator:BackgroundColorDecorator;
-        protected var backgroundImageDecorator:BackgroundImageDecorator;
+        protected var _borderDecorator:BorderDecorator;
+        protected var _paddingDecorator:PaddingDecorator;
+        protected var _backgroundColorDecorator:BackgroundColorDecorator;
+        protected var _backgroundImageDecorator:BackgroundImageDecorator;
         protected var DELIMITER:String = " ";
         protected var _debugPadding:Boolean = false;
         protected var _debugPaddingColor:uint = 0xFFFF00;
         protected var _width:Number = 0;
         protected var _height:Number = 0;
-        protected var marginDecorator:MarginDecorator;
+        private var _marginDecorator:MarginDecorator;
 
         public function BoxModelRenderer(display:Sprite, graphics:Graphics)
         {
-
             this.graphics = graphics;
             this.display = display;
-
-            createBoxModelDecorators(graphics, display);
         }
-
-        private function createBoxModelDecorators(graphics:Graphics, display:DisplayObjectContainer):void
-        {
-            borderDecorator = new BorderDecorator(graphics);
-            backgroundColorDecorator = new BackgroundColorDecorator(graphics);
-            backgroundImageDecorator = new BackgroundImageDecorator(graphics);
-            paddingDecorator = new PaddingDecorator();
-            marginDecorator = new MarginDecorator();
-        }
-
 
         /**
          *
@@ -785,5 +772,60 @@ package com.flashartofwar.fboxmodel.renderers
             paddingDecorator.paddingOffsetY = borderTop;
         }
 
+        public function get borderDecorator():BorderDecorator
+        {
+            return _borderDecorator ||= new BorderDecorator(graphics);
+        }
+
+        public function set borderDecorator(value:BorderDecorator):void
+        {
+            _borderDecorator = value;
+        }
+
+        public function get paddingDecorator():PaddingDecorator
+        {
+            return _paddingDecorator ||= new PaddingDecorator();
+        }
+
+        public function set paddingDecorator(value:PaddingDecorator):void
+        {
+            _paddingDecorator = value;
+        }
+
+        public function get backgroundColorDecorator():BackgroundColorDecorator
+        {
+            return _backgroundColorDecorator ||= new BackgroundColorDecorator(graphics);
+        }
+
+        public function set backgroundColorDecorator(value:BackgroundColorDecorator):void
+        {
+            _backgroundColorDecorator = value;
+        }
+
+        public function get backgroundImageDecorator():BackgroundImageDecorator
+        {
+            return _backgroundImageDecorator ||= new BackgroundImageDecorator(graphics);
+
+        }
+
+        public function set backgroundImageDecorator(value:BackgroundImageDecorator):void
+        {
+            _backgroundImageDecorator = value;
+        }
+
+        public function get marginDecorator():MarginDecorator
+        {
+            return _marginDecorator ||= new MarginDecorator();
+        }
+
+        public function set marginDecorator(value:MarginDecorator):void
+        {
+            _marginDecorator = value;
+        }
+
+        public function set roundCorners(value:int):void
+        {
+            _backgroundColorDecorator.roundCorners = _borderDecorator.roundCorners = value;
+        }
     }
 }

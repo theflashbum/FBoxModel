@@ -15,5 +15,6 @@ package com.flashartofwar.fboxmodel.decorators
 
         function set height(value:Number):void;
 
+
     }
 }

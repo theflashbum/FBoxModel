@@ -32,5 +32,7 @@ package com.flashartofwar.fboxmodel.decorators
         function get borderOffsetY():Number;
 
         function set borderOffsetY(value:Number):void;
+
+        function set roundCorners(value:int):void
     }
 }
