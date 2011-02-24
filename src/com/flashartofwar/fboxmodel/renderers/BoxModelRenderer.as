@@ -12,6 +12,7 @@ package com.flashartofwar.fboxmodel.renderers
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.geom.Rectangle;
+    import flash.net.registerClassAlias;
 
     public class BoxModelRenderer
     {
@@ -203,12 +204,19 @@ package com.flashartofwar.fboxmodel.renderers
          */
         public function set border(value:String):void
         {
-            var values:Array = value.split(DELIMITER, 4);
 
-            borderTop = borderRight = borderBottom = borderLeft = values[0];
-            borderColor = stringToColor(values[2]);
-            borderAlpha = ( values[3] != null ) ? Number(values[3]) : 1;
+            if(value == "none")
+            {
+                clearBorder();    
+            }
+            else
+            {
+                var values:Array = value.split(DELIMITER, 4);
 
+                borderTop = borderRight = borderBottom = borderLeft = values[0];
+                borderColor = stringToColor(values[2]);
+                borderAlpha = ( values[3] != null ) ? Number(values[3]) : 1;
+            }
 
         }
 
@@ -825,7 +833,7 @@ package com.flashartofwar.fboxmodel.renderers
 
         public function set roundCorners(value:int):void
         {
-            _backgroundColorDecorator.roundCorners = _borderDecorator.roundCorners = value;
+            backgroundColorDecorator.roundCorners = borderDecorator.roundCorners = value;
         }
     }
 }

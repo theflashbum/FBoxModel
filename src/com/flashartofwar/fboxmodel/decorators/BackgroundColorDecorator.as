@@ -5,7 +5,7 @@ package com.flashartofwar.fboxmodel.decorators
     public class BackgroundColorDecorator extends AbstractBackgroundDecorator implements IBackgroundColorDecorator
     {
 
-        protected var _color:uint = NaN;
+        protected var _color:uint;
         protected var _hasColor:Boolean;
         private var _roundCorners:int = 0;
 
